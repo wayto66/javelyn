@@ -9,7 +9,6 @@ export const isFieldRequested = (
   for (const selection of firstLevelSelectionSets) {
     const verify = verifySelection(selection, fieldName);
     if (verify.success) {
-      console.log("sucess for: ", fieldName);
       const includeSchema = mountPrismaIncludeObject(verify.schema);
       if (typeof includeSchema === "boolean") return true;
       return {

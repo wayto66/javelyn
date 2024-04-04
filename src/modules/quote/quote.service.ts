@@ -159,8 +159,6 @@ export class QuoteService {
       }
     }
 
-    console.log(JSON.stringify(where));
-
     return {
       objects: filteredQuotes,
       total: total.length,

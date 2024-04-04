@@ -165,8 +165,6 @@ export class TaskService {
       }
     }
 
-    console.log(where);
-
     return {
       objects: filteredProducts,
       total: total.length,

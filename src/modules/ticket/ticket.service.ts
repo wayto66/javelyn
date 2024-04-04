@@ -163,8 +163,6 @@ export class TicketService {
       }
     }
 
-    console.log(JSON.stringify(where));
-
     return {
       objects: filteredTickets,
       total: total.length,

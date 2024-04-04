@@ -58,7 +58,6 @@ export class TagService {
   }
 
   async findOne(id: number, info: unknown) {
-    console.log(info);
     return this.prismaService.tag.findUnique({
       where: { id: id },
     });

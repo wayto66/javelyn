@@ -72,7 +72,9 @@ export class LeadService {
 
     await this.prismaService.$transaction(leadCreations);
 
-    return 1;
+    return {
+      count: 1,
+    };
   }
 
   async findAll(
@@ -183,8 +185,6 @@ export class LeadService {
         );
       }
     }
-
-    console.log(JSON.stringify(where));
 
     return {
       objects: filteredLeads,
