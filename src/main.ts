@@ -1,16 +1,20 @@
 import { NestFactory } from "@nestjs/core";
-import { ExpressAdapter } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import express from "express";
 import * as fs from "fs";
-import https from "https";
 import { AppModule } from "./app.module";
 import { AllExceptionFilter } from "./infra/common/filter/all.exception.filter";
 import { LoggerService } from "./infra/common/logger/logger.service";
 
 async function bootstrap() {
-  const server = express();
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+  const httpsOptions = {
+    key: fs.readFileSync(
+      "../../../etc/letsencrypt/live/javelyn.link/privkey.pem",
+    ),
+    cert: fs.readFileSync(
+      "../../../etc/letsencrypt/live/javelyn.link/fullchain.pem",
+    ),
+  };
+  const app = await NestFactory.create(AppModule, { httpsOptions });
 
   process.on("uncaughtException", (err) => {
     console.error("\x1b[31m%s\x1b[0m", "UNCAUGHT EXCEPTION!");
@@ -40,18 +44,7 @@ async function bootstrap() {
     },
   });
 
-  const httpsOptions = {
-    key: fs.readFileSync(
-      "../../../etc/letsencrypt/live/javelyn.link/privkey.pem",
-    ),
-    cert: fs.readFileSync(
-      "../../../etc/letsencrypt/live/javelyn.link/fullchain.pem",
-    ),
-  };
-
-  await app.init();
-
-  https.createServer(httpsOptions, server).listen(4000);
+  await app.listen(4000);
 }
 
 bootstrap();
