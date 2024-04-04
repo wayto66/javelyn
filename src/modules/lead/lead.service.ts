@@ -60,15 +60,11 @@ export class LeadService {
   }
 
   async createMany(createLeadsInput: CreateLeadsInput) {
-    const leadCreations = createLeadsInput.leads.map((input) => {
-      try {
-        return this.prismaService.lead.create({
-          data: input,
-        });
-      } catch (e: any) {
-        return null;
-      }
-    });
+    const leadCreations = createLeadsInput.leads.map((input) =>
+      this.prismaService.lead.create({
+        data: input,
+      }),
+    );
 
     await this.prismaService.$transaction(leadCreations);
 
