@@ -60,11 +60,19 @@ export class LeadService {
   }
 
   async createMany(createLeadsInput: CreateLeadsInput) {
-    const leadCount = await this.prismaService.lead.createMany({
-      data: createLeadsInput.leads,
+    const leadCreations = createLeadsInput.leads.map((input) => {
+      try {
+        return this.prismaService.lead.create({
+          data: input,
+        });
+      } catch (e: any) {
+        return null;
+      }
     });
 
-    return leadCount;
+    await this.prismaService.$transaction(leadCreations);
+
+    return 1;
   }
 
   async findAll(
