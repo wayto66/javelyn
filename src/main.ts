@@ -1,4 +1,5 @@
 import { NestFactory } from "@nestjs/core";
+import { ExpressAdapter } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import express from "express";
 import * as fs from "fs";
@@ -8,7 +9,8 @@ import { AllExceptionFilter } from "./infra/common/filter/all.exception.filter";
 import { LoggerService } from "./infra/common/logger/logger.service";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const server = express();
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 
   process.on("uncaughtException", (err) => {
     console.error("\x1b[31m%s\x1b[0m", "UNCAUGHT EXCEPTION!");
@@ -47,9 +49,9 @@ async function bootstrap() {
     ),
   };
 
-  const server = express();
+  await app.init();
 
-  await https.createServer(httpsOptions, server).listen(4000);
+  https.createServer(httpsOptions, server).listen(4000);
 }
 
 bootstrap();
