@@ -39,8 +39,12 @@ async function bootstrap() {
   });
 
   const httpsOptions = {
-    key: fs.readFileSync("./secrets/private-key.pem"),
-    cert: fs.readFileSync("./secrets/public-certificate.pem"),
+    key: fs.readFileSync(
+      "../../../etc/letsencrypt/live/javelyn.link/privkey.pem",
+    ),
+    cert: fs.readFileSync(
+      "../../../etc/letsencrypt/live/javelyn.link/fullchain.pem",
+    ),
   };
 
   const server = express();
