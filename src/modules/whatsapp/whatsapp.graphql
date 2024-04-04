@@ -1,0 +1,50 @@
+input ConnectWhatsappInput {
+  companyId: Int!
+  userId: Int!
+}
+
+input DisconnectWhatsappInput {
+  companyId: Int!
+  userId: Int!
+}
+
+input ShutdownWhatsappInput {
+  userId: Int!
+  companyId: Int!
+}
+
+input SendMessageInput {
+  userId: Int!
+  message: String!
+  leadIds: [Int]
+  companyId: Int!
+  file: CustomScalar
+  phoneNumbers: [String]
+}
+
+type WhatsappConnectionResponse {
+  isConnected: Boolean!
+  qrCode: String
+  message: String
+}
+
+type SendMessageResponse {
+  succeeded: Boolean
+}
+
+type ShutdownResponse {
+  succeeded: Boolean
+}
+
+type Mutation {
+  connectWhatsapp(
+    connectWhatsappInput: ConnectWhatsappInput!
+  ): WhatsappConnectionResponse!
+  disconnectWhatsapp(
+    disconnectWhatsappInput: DisconnectWhatsappInput!
+  ): WhatsappConnectionResponse!
+  shutdownWhatsapp(
+    shutdownWhatsappInput: ShutdownWhatsappInput!
+  ): ShutdownResponse!
+  sendMessage(sendMessageInput: SendMessageInput!): SendMessageResponse!
+}

@@ -1,0 +1,39 @@
+type TicketProduct {
+  id: Int!
+  productId: Int!
+  ticketId: Int!
+  amount: Int!
+  value: Float!
+  product: Product!
+  ticket: Ticket!
+}
+
+input CreateTicketProductInput {
+  productId: Int!
+  ticketId: Int!
+  amount: Int!
+  value: Float!
+}
+
+input UpdateTicketProductInput {
+  id: Int!
+  productId: Int
+  ticketId: Int
+  amount: Int
+  value: Float
+}
+
+type Query {
+  ticketProducts: [TicketProduct]!
+  ticketProduct(id: Int!): TicketProduct
+}
+
+type Mutation {
+  createTicketProduct(
+    createTicketProductInput: CreateTicketProductInput!
+  ): TicketProduct!
+  updateTicketProduct(
+    updateTicketProductInput: UpdateTicketProductInput!
+  ): TicketProduct!
+  removeTicketProduct(id: Int!): TicketProduct
+}

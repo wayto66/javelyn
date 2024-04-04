@@ -1,0 +1,74 @@
+type Task {
+  id: Int!
+  companyId: Int!
+  userId: Int!
+  title: String!
+  body: String!
+  observation: String
+  conclusion: String!
+  categoryid: Int!
+  category: TaskCategory!
+  targets: [Lead]
+  quotes: [Quote]
+  tasks: [Task]
+  user: User!
+  company: Company!
+  isHandled: Boolean!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  targetDate: DateTime!
+  handledAt: DateTime
+}
+
+input CreateTaskInput {
+  companyId: Int!
+  userId: Int!
+  title: String!
+  body: String!
+  observation: String
+  conclusion: String
+  categoryId: Int!
+  leadIds: [Int]!
+  quoteIds: [Int]
+  taskIds: [Int]
+  targetDate: DateTime!
+}
+
+input UpdateTaskInput {
+  id: Int!
+  companyId: Int
+  userId: Int
+  title: String
+  body: String
+  observation: String
+  conclusion: String
+  categoryId: Int
+  leadIds: [Int]
+  quoteIds: [Int]
+  taskIds: [Int]
+  isHandled: Boolean
+  isActive: Boolean
+  targetDate: DateTime
+  handledAt: DateTime
+}
+
+type FindManyTasksResponse {
+  objects: [Task]!
+  total: Int!
+}
+
+type Query {
+  tasks(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyTasksResponse!
+  task(id: Int!): Task
+}
+
+type Mutation {
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+  removeTask(id: Int!): Task
+}

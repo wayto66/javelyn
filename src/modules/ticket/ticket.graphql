@@ -1,0 +1,77 @@
+type Ticket {
+  id: Int!
+  userId: Int!
+  leadId: Int!
+  companyId: Int!
+  value: Float!
+  origin: String
+  observation: String
+  customFields: CustomScalar
+  quotes: [Quote]
+  tags: [Tag]
+  lead: Lead!
+  products: [TicketProduct]
+  user: User!
+  company: Company!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateTicketTicketProductInput {
+  productId: Int!
+  amount: Int!
+  value: Float!
+}
+
+input QuoteInput {
+  id: Int!
+}
+
+input CreateTicketInput {
+  userId: Int!
+  leadId: Int!
+  companyId: Int!
+  tagsIds: [Int]
+  value: Float!
+  origin: String
+  observation: String
+  quotes: [QuoteInput]
+  products: [CreateTicketTicketProductInput]
+  customFields: CustomScalar
+}
+
+input UpdateTicketInput {
+  id: Int!
+  userId: Int
+  leadId: Int
+  tagsIds: [Int]
+  companyId: Int
+  value: Float
+  origin: String
+  observation: String
+  quotes: [QuoteInput]
+  products: [CreateTicketTicketProductInput]
+  isActive: Boolean
+  customFields: CustomScalar
+}
+
+type FindManyTicketsResponse {
+  objects: [Ticket]!
+  total: Int!
+}
+
+type Query {
+  tickets(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyTicketsResponse!
+  ticket(id: Int!): Ticket
+}
+
+type Mutation {
+  createTicket(createTicketInput: CreateTicketInput!): Ticket!
+  updateTicket(updateTicketInput: UpdateTicketInput!): Ticket!
+  removeTicket(id: Int!): Ticket
+}

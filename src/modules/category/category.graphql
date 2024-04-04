@@ -1,0 +1,37 @@
+type Category {
+  id: Int!
+  companyId: Int!
+  name: String!
+  products: [Product]
+  company: Company!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateCategoryInput {
+  companyId: Int!
+  name: String!
+}
+
+input UpdateCategoryInput {
+  id: Int!
+  name: String!
+  companyId: Int!
+}
+
+type FindManyCategoryResponse {
+  objects: [Category]!
+  total: Int!
+}
+
+type Query {
+  categories(page: Int!, pageSize: Int!): FindManyCategoryResponse!
+  category(id: Int!): Category
+}
+
+type Mutation {
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category
+}

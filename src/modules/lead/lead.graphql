@@ -1,0 +1,127 @@
+type Lead {
+  id: Int!
+  uuid: String
+  companyId: Int!
+  userId: Int!
+  name: String!
+  CPF: String
+  phone: String
+  mail: String
+  adOrigin: String
+  status: String
+  observation: String
+  customFields: CustomScalar
+  age: Int
+  neighborhood: String
+  adress: String
+  zipCode: String
+  houseNumber: Int
+  profession: String
+  birthday: DateTime
+  birthdayDay: Int
+  birthdayMonth: Int
+  birthdayYear: Int
+  throws: [Throw]
+  tasks: [Task]
+  tickets: [Ticket]
+  tags: [Tag]
+  quotes: [Quote]
+  user: User!
+  company: Company!
+  isRescue: Boolean!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateLeadInput {
+  companyId: Int!
+  userId: Int!
+  name: String!
+  CPF: String
+  phone: String
+  mail: String
+  adOrigin: String
+  status: String
+  observation: String
+  customFields: CustomScalar
+  age: Int
+  neighborhood: String
+  adress: String
+  zipCode: String
+  houseNumber: Int
+  profession: String
+  birthday: DateTime
+  birthdayDay: Int
+  birthdayMonth: Int
+  birthdayYear: Int
+  isRescue: Boolean
+  isActive: Boolean
+  tagsIds: [Int]
+}
+
+input CreateLeadsInput {
+  leads: [CreateLeadInput!]!
+}
+
+input UpdateLeadInput {
+  id: Int!
+  companyId: Int
+  userId: Int
+  name: String
+  CPF: String
+  phone: String
+  mail: String
+  adOrigin: String
+  status: String
+  observation: String
+  age: Int
+  neighborhood: String
+  customFields: CustomScalar
+  adress: String
+  zipCode: String
+  houseNumber: Int
+  profession: String
+  birthday: DateTime
+  birthdayDay: Int
+  birthdayMonth: Int
+  birthdayYear: Int
+  isRescue: Boolean
+  isActive: Boolean
+  tagsIds: [Int]
+}
+
+type FindManyLeadsResponse {
+  objects: [Lead]!
+  total: Int!
+}
+
+type Query {
+  leads(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyLeadsResponse!
+  lead(id: Int!): Lead
+}
+
+type ErrorResponse {
+  message: String!
+  status: String!
+}
+
+type CreateLeadResponse {
+  lead: Lead
+  error: ErrorResponse
+}
+
+type CreateLeadsResponse {
+  count: Int!
+}
+
+type Mutation {
+  createLead(createLeadInput: CreateLeadInput!): CreateLeadResponse!
+  createLeads(createLeadsInput: CreateLeadsInput!): CreateLeadsResponse!
+  updateLead(updateLeadInput: UpdateLeadInput!): Lead!
+  removeLead(id: Int!): Lead
+}

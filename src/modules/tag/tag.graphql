@@ -1,0 +1,52 @@
+type Tag {
+  id: Int!
+  companyId: Int!
+  name: String!
+  colorHex: String!
+  description: String
+  quotes: [Quote]
+  leads: [Lead]
+  tickets: [Ticket]
+  products: [Product]
+  tasks: [Task]
+  company: Company!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateTagInput {
+  companyId: Int!
+  name: String!
+  colorHex: String!
+  description: String
+}
+
+input UpdateTagInput {
+  id: Int!
+  companyId: Int
+  name: String
+  colorHex: String
+  description: String
+  quotesIds: [Int]
+  leadsIds: [Int]
+  ticketsIds: [Int]
+  productsIds: [Int]
+  isActive: Boolean
+}
+
+type FindManyTagReponse {
+  objects: [Tag]!
+  total: Int!
+}
+
+type Query {
+  tags(page: Int!, pageSize: Int!, filters: FiltersInput): FindManyTagReponse!
+  tag(id: Int!): Tag
+}
+
+type Mutation {
+  createTag(createTagInput: CreateTagInput!): Tag!
+  updateTag(updateTagInput: UpdateTagInput!): Tag!
+  removeTag(id: Int!): Tag
+}

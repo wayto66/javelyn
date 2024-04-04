@@ -1,0 +1,89 @@
+scalar CustomScalar
+
+type Product {
+  id: Int!
+  sku: String!
+  companyId: Int!
+  categoryId: Int!
+  name: String!
+  value: Float
+  ticketProducts: [TicketProduct]
+  quoteProducts: [QuoteProduct]
+  tags: [Tag]
+  customFields: CustomScalar
+  company: Company!
+  category: Category!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum SortBy {
+  CHEAPER
+  COSTLIER
+  NEWER
+  OLDER
+  AZ
+  ZA
+}
+
+input FiltersInput {
+  userId: Int
+  companyId: Int
+  filterId: Int
+  tagIds: [Int]
+  productIds: [Int]
+  categoryId: Int
+  categoryName: String
+  name: String
+  CPF: String
+  phone: String
+  sort: SortBy
+  includeInactive: Boolean
+  includeHandled: Boolean
+  demandAllConditions: Boolean
+  dateGt: String
+  dateLt: String
+}
+
+input CreateProductInput {
+  companyId: Int!
+  sku: String!
+  categoryId: Int!
+  tagsIds: [Int]
+  name: String!
+  value: Float
+  customFields: CustomScalar
+}
+
+input UpdateProductInput {
+  id: Int!
+  sku: String
+  companyId: Int
+  categoryId: Int
+  tagsIds: [Int]
+  name: String
+  value: Float
+  isActive: Boolean
+  customFields: CustomScalar
+}
+
+type FindManyProductsResponse {
+  objects: [Product]!
+  total: Int!
+}
+
+type Query {
+  products(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyProductsResponse!
+  product(id: Int!): Product
+}
+
+type Mutation {
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(updateProductInput: UpdateProductInput!): Product!
+  removeProduct(id: Int!): Product
+}

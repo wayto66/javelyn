@@ -1,0 +1,71 @@
+enum AtributeType {
+  LEAD
+  QUOTE
+  TICKET
+  PRODUCT
+}
+
+enum AtributeValueType {
+  STRING
+  NUMBER
+  BOOLEAN
+  STRING_ARRAY
+  NUMBER_ARRAY
+  JSON
+}
+
+type Attribute {
+  id: Int!
+  companyId: Int!
+  userId: Int!
+  name: String!
+  observation: String
+  types: [AtributeType]!
+  valueType: AtributeValueType!
+
+  company: Company!
+  user: User!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateAttributeInput {
+  companyId: Int!
+  userId: Int!
+  name: String!
+  observation: String
+  types: [AtributeType]!
+  valueType: AtributeValueType!
+}
+
+input UpdateAttributeInput {
+  id: Int!
+  companyId: Int
+  name: String
+  observation: String
+  types: [AtributeType]
+  valueType: AtributeValueType
+
+  isActive: Boolean
+}
+
+type FindManyAttributeReponse {
+  objects: [Attribute]!
+  total: Int!
+}
+
+type Query {
+  attributes(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyAttributeReponse!
+  attribute(id: Int!): Attribute
+}
+
+type Mutation {
+  createAttribute(createAttributeInput: CreateAttributeInput!): Attribute!
+  updateAttribute(updateAttributeInput: UpdateAttributeInput!): Attribute!
+  removeAttribute(id: Int!): Attribute
+}

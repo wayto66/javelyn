@@ -1,0 +1,37 @@
+type Role {
+  id: Int!
+  companyId: Int!
+  name: String!
+  permissions: JSON!
+  company: Company!
+  users: [User]
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateRoleInput {
+  companyId: Int!
+  name: String!
+  permissions: JSON
+  isActive: Boolean!
+}
+
+input UpdateRoleInput {
+  id: Int!
+  companyId: Int!
+  name: String!
+  permissions: JSON
+  isActive: Boolean!
+}
+
+type Query {
+  roles: [Role]!
+  role(id: Int!): Role
+}
+
+type Mutation {
+  createRole(createRoleInput: CreateRoleInput!): Role!
+  updateRole(updateRoleInput: UpdateRoleInput!): Role!
+  removeRole(id: Int!): Role
+}

@@ -1,0 +1,74 @@
+type Quote {
+  id: Int!
+  companyId: Int!
+  userId: Int!
+  leadId: Int!
+  ticketId: Int
+  observation: String
+  value: Float!
+  products: [QuoteProduct]
+  customFields: CustomScalar
+  ticket: Ticket
+  tasks: [Task]
+  tags: [Tag]
+  company: Company!
+  user: User!
+  lead: Lead
+  handledAt: DateTime
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input QuoteProductInput {
+  productId: Int!
+  value: Float!
+  amount: Int!
+}
+
+input CreateQuoteInput {
+  companyId: Int!
+  userId: Int!
+  leadId: Int!
+  ticketId: Int
+  observation: String
+  value: Float!
+  products: [QuoteProductInput]
+  tagsIds: [Int]
+  customFields: CustomScalar
+}
+
+input UpdateQuoteInput {
+  id: Int!
+  companyId: Int
+  userId: Int
+  leadId: Int
+  ticketId: Int
+  observation: String
+  value: Float
+  products: [QuoteProductInput]
+  tagsIds: [Int]
+  handledAt: DateTime
+  isActive: Boolean
+  customFields: CustomScalar
+}
+
+type FindManyQuotesResponse {
+  objects: [Quote]!
+  total: Int!
+}
+
+type Query {
+  quotes(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyQuotesResponse!
+  quote(id: Int!): Quote
+}
+
+type Mutation {
+  createQuote(createQuoteInput: CreateQuoteInput!): Quote!
+  updateQuote(updateQuoteInput: UpdateQuoteInput!): Quote!
+  removeQuote(id: Int!): Quote
+}

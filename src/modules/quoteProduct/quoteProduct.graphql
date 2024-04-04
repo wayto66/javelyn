@@ -1,0 +1,39 @@
+type QuoteProduct {
+  id: Int!
+  productId: Int!
+  quoteId: Int!
+  amount: Int!
+  value: Float!
+  product: Product!
+  quote: Quote!
+}
+
+input CreateQuoteProductInput {
+  productId: Int!
+  quoteId: Int!
+  amount: Int!
+  value: Float!
+}
+
+input UpdateQuoteProductInput {
+  id: Int!
+  productId: Int!
+  quoteId: Int!
+  amount: Int!
+  value: Float!
+}
+
+type Query {
+  quoteProducts: [QuoteProduct]!
+  quoteProduct(id: Int!): QuoteProduct
+}
+
+type Mutation {
+  createQuoteProduct(
+    createQuoteProductInput: CreateQuoteProductInput!
+  ): QuoteProduct!
+  updateQuoteProduct(
+    updateQuoteProductInput: UpdateQuoteProductInput!
+  ): QuoteProduct!
+  removeQuoteProduct(id: Int!): QuoteProduct
+}

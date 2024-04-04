@@ -1,0 +1,39 @@
+type Throw {
+  id: Int!
+  companyId: Int!
+  userId: Int!
+  body: String!
+  targets: [Lead]
+  user: User!
+  createdAt: DateTime!
+}
+
+input LeadInput {
+  id: Int!
+}
+
+input CreateThrowInput {
+  companyId: Int!
+  userId: Int!
+  body: String!
+  targets: [LeadInput]
+}
+
+input UpdateThrowInput {
+  id: Int!
+  companyId: Int
+  userId: Int
+  body: String
+  targets: [LeadInput]
+}
+
+type Query {
+  throws: [Throw]!
+  throw(id: Int!): Throw
+}
+
+type Mutation {
+  createThrow(createThrowInput: CreateThrowInput!): Throw!
+  updateThrow(updateThrowInput: UpdateThrowInput!): Throw!
+  removeThrow(id: Int!): Throw
+}

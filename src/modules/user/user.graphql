@@ -1,0 +1,59 @@
+type User {
+  id: Int!
+  companyId: Int!
+  permissions: CustomScalar!
+  username: String!
+  password: String!
+  name: String!
+  zapQrcode: String!
+  zapStatus: String!
+  company: Company!
+  tickets: [Ticket]
+  throws: [Throw]
+  tasks: [Task]
+  quotes: [Quote]
+  leads: [Lead]
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateUserInput {
+  companyId: Int!
+  permissions: CustomScalar
+  username: String!
+  password: String!
+  name: String!
+}
+
+input UpdateUserInput {
+  id: Int!
+  companyId: Int
+  permissions: CustomScalar
+  username: String
+  password: String
+  name: String
+  zapQrcode: String
+  zapStatus: String
+  isActive: Boolean
+}
+
+type FindManyUserResponse {
+  objects: [User]!
+  total: Int!
+}
+
+type Query {
+  users(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyUserResponse!
+  user(id: Int!): User
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User
+}

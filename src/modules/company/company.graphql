@@ -1,0 +1,59 @@
+scalar DateTime
+scalar JSON
+
+type Company {
+  id: Int!
+  name: String!
+  email: String
+  phone: String
+  plan: String!
+  maxWhatsappSlots: Int!
+  whatsappSlots: Int!
+  leads: [Lead]
+  users: [User]
+  tickets: [Ticket]
+  products: [Product]
+  tasks: [Task]
+  quotes: [Quote]
+  roles: [Role]
+  categories: [Category]
+  attributes: [Attribute]
+  customFields: CustomScalar
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateCompanyInput {
+  name: String!
+  email: String
+  phone: String
+  plan: String
+  max_whatsapp_slots: Int
+  whatsapp_slots: Int
+  is_active: Boolean
+  customFields: CustomScalar
+}
+
+input UpdateCompanyInput {
+  id: Int!
+  name: String
+  email: String
+  phone: String
+  plan: String
+  max_whatsapp_slots: Int
+  whatsapp_slots: Int
+  is_active: Boolean
+  customFields: CustomScalar
+}
+
+type Query {
+  companies: [Company]!
+  company(id: Int): Company
+}
+
+type Mutation {
+  createCompany(createCompanyInput: CreateCompanyInput!): Company!
+  updateCompany(updateCompanyInput: UpdateCompanyInput!): Company
+  removeCompany(id: Int!): Company
+}

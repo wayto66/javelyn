@@ -1,0 +1,17 @@
+type AuthResponse {
+  access_token: String
+  id: Int
+  name: String
+  username: String
+  isAuthenticated: Boolean!
+  permissions: JSON!
+}
+
+input SignInInput {
+  username: String!
+  password: String!
+}
+
+type Mutation {
+  signIn(signInInput: SignInInput!): AuthResponse!
+}

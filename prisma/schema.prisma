@@ -1,0 +1,317 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id               Int            @id @default(autoincrement())
+  name             String
+  email            String?
+  phone            String?
+  plan             String         @default("default")
+  maxWhatsappSlots Int            @default(1)
+  whatsappSlots    Int            @default(1)
+  customFields     Json?
+  leads            Lead[]
+  users            User[]
+  tickets          Ticket[]
+  products         Product[]
+  tasks            Task[]
+  quotes           Quote[]
+  categories       Category[]
+  tags             Tag[]
+  taskCategories   TaskCategory[]
+  attributes       Attribute[]
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model Tag {
+  id          Int    @id @default(autoincrement())
+  companyId   Int
+  name        String
+  colorHex    String
+  description String
+
+  quotes   Quote[]
+  leads    Lead[]
+  tickets  Ticket[]
+  products Product[]
+  tasks    Task[]
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model Ticket {
+  id           Int     @id @default(autoincrement())
+  userId       Int
+  leadId       Int
+  companyId    Int
+  value        Float
+  origin       String?
+  observation  String?
+  customFields Json?
+
+  quotes   Quote[]
+  lead     Lead            @relation(fields: [leadId], references: [id])
+  products TicketProduct[]
+
+  user    User    @relation(fields: [userId], references: [id])
+  company Company @relation(fields: [companyId], references: [id])
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  tags      Tag[]
+}
+
+model TicketProduct {
+  id        Int   @id @default(autoincrement())
+  productId Int
+  ticketId  Int
+  amount    Int
+  value     Float
+
+  product Product @relation(fields: [productId], references: [id])
+  ticket  Ticket  @relation(fields: [ticketId], references: [id])
+}
+
+model QuoteProduct {
+  id        Int   @id @default(autoincrement())
+  productId Int
+  quoteId   Int
+  amount    Int
+  value     Float
+
+  product Product @relation(fields: [productId], references: [id])
+  quote   Quote   @relation(fields: [quoteId], references: [id])
+}
+
+model Product {
+  id             Int             @id @default(autoincrement())
+  sku            String?         @unique @default(uuid())
+  companyId      Int
+  categoryId     Int
+  name           String
+  value          Float?
+  customFields   Json?
+  ticketProducts TicketProduct[]
+  quoteProducts  QuoteProduct[]
+  company        Company         @relation(fields: [companyId], references: [id])
+  category       Category        @relation(fields: [categoryId], references: [id])
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  tags      Tag[]
+
+  @@unique([companyId, name])
+}
+
+model Lead {
+  id        Int     @id @default(autoincrement())
+  uuid      String? @default(uuid())
+  companyId Int
+  userId    Int
+  name      String
+  CPF       String?
+  phone     String?
+  mail      String?
+
+  adOrigin     String?
+  status       String?
+  observation  String?
+  customFields Json?
+
+  age           Int?
+  neighborhood  String?
+  adress        String?
+  zipCode       String?
+  houseNumber   Int?
+  profession    String?
+  birthday      DateTime?
+  birthdayDay   Int?
+  birthdayMonth Int?
+  birthdayYear  Int?
+
+  throws  Throw[]
+  tasks   Task[]
+  tickets Ticket[]
+  quotes  Quote[]
+  user    User     @relation(fields: [userId], references: [id])
+  company Company  @relation(fields: [companyId], references: [id])
+
+  isRescue Boolean @default(false)
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  tags      Tag[]
+
+  @@unique([companyId, name, phone])
+  @@unique([companyId, CPF])
+}
+
+model Category {
+  id        Int    @id @default(autoincrement())
+  companyId Int
+  name      String
+
+  products Product[]
+  company  Company   @relation(fields: [companyId], references: [id])
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model TaskCategory {
+  id        Int    @id @default(autoincrement())
+  companyId Int
+  name      String
+  color     String
+
+  tasks   Task[]
+  company Company @relation(fields: [companyId], references: [id])
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model User {
+  id          Int    @id @default(autoincrement())
+  companyId   Int
+  username    String @unique
+  password    String
+  name        String
+  permissions Json
+
+  zapQrcode String @default("")
+  zapStatus String @default("disconnected")
+
+  company    Company     @relation(fields: [companyId], references: [id])
+  tickets    Ticket[]
+  throws     Throw[]
+  tasks      Task[]
+  quotes     Quote[]
+  leads      Lead[]
+  attributes Attribute[]
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Throw {
+  id        Int    @id @default(autoincrement())
+  companyId Int
+  userId    Int
+  body      String
+  targets   Lead[]
+  user      User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Task {
+  id           Int     @id @default(autoincrement())
+  companyId    Int
+  userId       Int
+  categoryId   Int
+  title        String
+  body         String
+  observation  String?
+  conclusion   String  @default("INDEFINIDO")
+  customFields Json?
+
+  targets  Lead[]
+  tags     Tag[]
+  quotes   Quote[]
+  category TaskCategory @relation(fields: [categoryId], references: [id])
+  user     User         @relation(fields: [userId], references: [id])
+  company  Company      @relation(fields: [companyId], references: [id])
+
+  isHandled  Boolean   @default(false)
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt()
+  targetDate DateTime
+  handledAt  DateTime?
+}
+
+model Quote {
+  id           Int   @id @default(autoincrement())
+  companyId    Int
+  userId       Int
+  leadId       Int
+  ticketId     Int?
+  customFields Json?
+
+  observation String?
+  value       Float   @default(0)
+
+  tags     Tag[]
+  products QuoteProduct[]
+  ticket   Ticket?        @relation(fields: [ticketId], references: [id])
+  tasks    Task[]
+  company  Company        @relation(fields: [companyId], references: [id])
+  user     User           @relation(fields: [userId], references: [id])
+  lead     Lead           @relation(fields: [leadId], references: [id])
+
+  handledAt DateTime?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+}
+
+enum AtributeType {
+  LEAD
+  QUOTE
+  TICKET
+  PRODUCT
+}
+
+enum AtributeValueType {
+  STRING
+  NUMBER
+  BOOLEAN
+  STRING_ARRAY
+  NUMBER_ARRAY
+  JSON
+}
+
+model Attribute {
+  id        Int               @id @default(autoincrement())
+  companyId Int
+  userId    Int
+  name      String
+  types     AtributeType[]
+  valueType AtributeValueType
+
+  observation String?
+
+  company Company @relation(fields: [companyId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  handledAt DateTime?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+}

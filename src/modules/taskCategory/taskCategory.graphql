@@ -1,0 +1,44 @@
+type TaskCategory {
+  id: Int!
+  companyId: Int!
+  name: String!
+  color: String!
+  tasks: [Task]
+  company: Company!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateTaskCategoryInput {
+  companyId: Int!
+  name: String!
+  color: String!
+}
+
+input UpdateTaskCategoryInput {
+  id: Int!
+  name: String!
+  color: String!
+  companyId: Int!
+}
+
+type FindManyTaskCategoryResponse {
+  objects: [TaskCategory]!
+  total: Int!
+}
+
+type Query {
+  taskCategories(page: Int!, pageSize: Int!): FindManyTaskCategoryResponse!
+  taskCategory(id: Int!): TaskCategory
+}
+
+type Mutation {
+  createTaskCategory(
+    createTaskCategoryInput: CreateTaskCategoryInput!
+  ): TaskCategory!
+  updateTaskCategory(
+    updateTaskCategoryInput: UpdateTaskCategoryInput!
+  ): TaskCategory!
+  removeTaskCategory(id: Int!): TaskCategory
+}
