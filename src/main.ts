@@ -1,5 +1,8 @@
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import express from "express";
+import fs from "fs";
+import https from "https";
 import { AppModule } from "./app.module";
 import { AllExceptionFilter } from "./infra/common/filter/all.exception.filter";
 import { LoggerService } from "./infra/common/logger/logger.service";
@@ -35,7 +38,14 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(4000);
+  const httpsOptions = {
+    key: fs.readFileSync("./secrets/private-key.pem"),
+    cert: fs.readFileSync("./secrets/public-certificate.pem"),
+  };
+
+  const server = express();
+
+  await https.createServer(httpsOptions, server).listen(4000);
 }
 
 bootstrap();
