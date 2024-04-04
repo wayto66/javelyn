@@ -61,15 +61,24 @@ export class LeadService {
 
   async createMany(createLeadsInput: CreateLeadsInput) {
     const leadCreations = createLeadsInput.leads.map((input) =>
-      this.prismaService.lead.create({
-        data: input,
-      }),
+      this.prismaService.lead
+        .create({
+          data: input,
+        })
+        .catch(() => {
+          console.error("Erro ao criar lead:", input.name);
+          return null;
+        }),
     );
 
-    await this.prismaService.$transaction(leadCreations);
+    const results = await Promise.allSettled(leadCreations);
+
+    const successfulCreations = results.filter(
+      (result) => result.status === "fulfilled" && result.value !== null,
+    ).length;
 
     return {
-      count: 1,
+      count: successfulCreations,
     };
   }
 
