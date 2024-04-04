@@ -1,7 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import express from "express";
-import fs from "fs";
+import * as fs from "fs";
 import https from "https";
 import { AppModule } from "./app.module";
 import { AllExceptionFilter } from "./infra/common/filter/all.exception.filter";
