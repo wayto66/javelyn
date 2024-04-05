@@ -183,6 +183,7 @@ export class QuoteService {
       tagsIds,
       products,
       customFields,
+      handledAt,
     } = updateQuoteInput;
 
     if (products)
@@ -211,6 +212,7 @@ export class QuoteService {
         userId,
         value,
         observation,
+        handledAt,
         isActive,
         tags: prismaCollectionSet(tagsIds),
         customFields,
