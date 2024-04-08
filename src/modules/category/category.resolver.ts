@@ -1,6 +1,10 @@
 import { UseGuards } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { CreateCategoryInput, UpdateCategoryInput } from "src/graphql";
+import {
+  CreateCategoryInput,
+  FiltersInput,
+  UpdateCategoryInput,
+} from "src/graphql";
 import { AuthGuard } from "src/infra/common/guard/auth.guard";
 import { CategoryService } from "./category.service";
 
@@ -17,8 +21,12 @@ export class CategoryResolver {
   }
 
   @Query("categories")
-  findAll(@Args("page") page: number, @Args("pageSize") pageSize: number) {
-    return this.categoryService.findAll(page, pageSize);
+  findAll(
+    @Args("page") page: number,
+    @Args("pageSize") pageSize: number,
+    @Args("filters") filters: FiltersInput,
+  ) {
+    return this.categoryService.findAll(page, pageSize, filters);
   }
 
   @UseGuards(AuthGuard)

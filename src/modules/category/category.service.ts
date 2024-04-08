@@ -1,6 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "prisma/prisma.service";
-import { CreateCategoryInput, UpdateCategoryInput } from "src/graphql";
+import {
+  CreateCategoryInput,
+  FiltersInput,
+  UpdateCategoryInput,
+} from "src/graphql";
 
 @Injectable()
 export class CategoryService {
@@ -11,13 +15,18 @@ export class CategoryService {
     });
   }
 
-  async findAll(page: number, pageSize: number) {
+  async findAll(page: number, pageSize: number, filters: FiltersInput) {
+    const where = {
+      companyId: filters.companyId,
+    };
     const total = await this.prismaService.category.findMany({
+      where,
       select: {
         id: true,
       },
     });
     const objects = await this.prismaService.category.findMany({
+      where,
       take: pageSize,
       skip: (page - 1) * pageSize,
     });

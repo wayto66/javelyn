@@ -26,7 +26,11 @@ type FindManyCategoryResponse {
 }
 
 type Query {
-  categories(page: Int!, pageSize: Int!): FindManyCategoryResponse!
+  categories(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyCategoryResponse!
   category(id: Int!): Category
 }
 

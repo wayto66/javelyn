@@ -1,10 +1,5 @@
 import { OnModuleInit } from "@nestjs/common";
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from "@nestjs/websockets";
+import { WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server } from "socket.io";
 import { Client } from "whatsapp-web.js";
 
@@ -70,11 +65,5 @@ export class GatewayService implements OnModuleInit {
         console.log("ws-disconnect", userId);
       });
     });
-  }
-
-  @SubscribeMessage("updateWorkflow")
-  onChangeWorkflow(@MessageBody() payload: any) {
-    this.server.emit("updateWorkflow", payload);
-    return;
   }
 }

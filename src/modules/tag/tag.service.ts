@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
+import { GraphQLResolveInfo } from "graphql";
 import { PrismaService } from "prisma/prisma.service";
 import { CreateTagInput, FiltersInput, UpdateTagInput } from "src/graphql";
+import { isFieldRequested } from "src/helpers/isFieldRequested";
 
 @Injectable()
 export class TagService {
@@ -17,36 +19,26 @@ export class TagService {
   }
 
   async findAll(page: number, pageSize: number, filters: FiltersInput) {
+    const where: any = {
+      name: filters.name
+        ? {
+            contains: filters.name,
+            mode: "insensitive",
+          }
+        : undefined,
+      OR: filters.includeInactive
+        ? [{ isActive: true }, { isActive: false }]
+        : [{ isActive: true }],
+      companyId: filters.companyId,
+    };
     const total = await this.prismaService.tag.findMany({
-      where: {
-        name: filters.name
-          ? {
-              contains: filters.name,
-              mode: "insensitive",
-            }
-          : undefined,
-        OR: filters.includeInactive
-          ? [{ isActive: true }, { isActive: false }]
-          : [{ isActive: true }],
-      },
-
+      where,
       select: {
         id: true,
       },
     });
     const objects = await this.prismaService.tag.findMany({
-      where: {
-        name: filters.name
-          ? {
-              contains: filters.name,
-              mode: "insensitive",
-            }
-          : undefined,
-        OR: filters.includeInactive
-          ? [{ isActive: true }, { isActive: false }]
-          : [{ isActive: true }],
-      },
-
+      where,
       take: pageSize,
       skip: (page - 1) * pageSize,
     });
@@ -57,9 +49,12 @@ export class TagService {
     };
   }
 
-  async findOne(id: number, info: unknown) {
+  async findOne(id: number, info: GraphQLResolveInfo) {
     return this.prismaService.tag.findUnique({
       where: { id: id },
+      include: {
+        leads: isFieldRequested(info, "leads"),
+      },
     });
   }
 

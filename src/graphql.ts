@@ -458,7 +458,7 @@ export abstract class IQuery {
 
     abstract attribute(id: number): Nullable<Attribute> | Promise<Nullable<Attribute>>;
 
-    abstract categories(page: number, pageSize: number): FindManyCategoryResponse | Promise<FindManyCategoryResponse>;
+    abstract categories(page: number, pageSize: number, filters?: Nullable<FiltersInput>): FindManyCategoryResponse | Promise<FindManyCategoryResponse>;
 
     abstract category(id: number): Nullable<Category> | Promise<Nullable<Category>>;
 
