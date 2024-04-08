@@ -27,36 +27,27 @@ export class AttributeService {
   }
 
   async findAll(page: number, pageSize: number, filters: FiltersInput) {
+    const where: any = {
+      name: filters.name
+        ? {
+            contains: filters.name,
+            mode: "insensitive",
+          }
+        : undefined,
+      OR: filters.includeInactive
+        ? [{ isActive: true }, { isActive: false }]
+        : [{ isActive: true }],
+      companyId: filters.companyId,
+    };
     const total = await this.prismaService.attribute.findMany({
-      where: {
-        name: filters.name
-          ? {
-              contains: filters.name,
-              mode: "insensitive",
-            }
-          : undefined,
-        OR: filters.includeInactive
-          ? [{ isActive: true }, { isActive: false }]
-          : [{ isActive: true }],
-        companyId: filters.companyId,
-      },
+      where,
 
       select: {
         id: true,
       },
     });
     const objects = await this.prismaService.attribute.findMany({
-      where: {
-        name: filters.name
-          ? {
-              contains: filters.name,
-              mode: "insensitive",
-            }
-          : undefined,
-        OR: filters.includeInactive
-          ? [{ isActive: true }, { isActive: false }]
-          : [{ isActive: true }],
-      },
+      where,
 
       take: pageSize,
       skip: (page - 1) * pageSize,
