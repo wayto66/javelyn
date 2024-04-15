@@ -18,9 +18,3 @@ EXPOSE 4000
 
 # Comando para rodar a aplicação
 CMD ["nest", "start"]
-
-aws ecr get-login-password --region sa-east-1 | docker login --username AWS --password-stdin 686169939187.dkr.ecr.sa-east-1.amazonaws.com
-
-docker tag javelyn:latest 686169939187.dkr.ecr.sa-east-1.amazonaws.com/javelyn
-
-docker push 686169939187.dkr.ecr.sa-east-1.amazonaws.com/javelyn
