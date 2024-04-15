@@ -1,5 +1,5 @@
 # Use a imagem oficial do Node.js como imagem pai.
-FROM node:14
+FROM node:20
 
 # Define o diretório de trabalho dentro do container
 WORKDIR /usr/src/app
@@ -14,7 +14,13 @@ RUN npm install
 COPY . .
 
 # Expõe a porta que a aplicação vai rodar
-EXPOSE 3000
+EXPOSE 4000
 
 # Comando para rodar a aplicação
 CMD ["nest", "start"]
+
+aws ecr get-login-password --region sa-east-1 | docker login --username AWS --password-stdin 686169939187.dkr.ecr.sa-east-1.amazonaws.com
+
+docker tag javelyn:latest 686169939187.dkr.ecr.sa-east-1.amazonaws.com/javelyn
+
+docker push 686169939187.dkr.ecr.sa-east-1.amazonaws.com/javelyn

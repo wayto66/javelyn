@@ -8,9 +8,9 @@ phases:
   build:
     commands:
       - echo Building the Docker image...
-      - docker build -t synkroflare .
-      - docker tag synkroflare:latest public.ecr.aws/w5h9t1j4/synkroflare:latest
+      - docker build -t javelyn .
+      - docker tag javelyn:latest public.ecr.aws/w5h9t1j4/javelyn:latest
   post_build:
     commands:
       - echo Pushing the Docker image...
-      - docker push public.ecr.aws/w5h9t1j4/synkroflare:latest
+      - docker push public.ecr.aws/w5h9t1j4/javelyn:latest
