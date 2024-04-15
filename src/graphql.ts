@@ -165,6 +165,7 @@ export class FiltersInput {
     demandAllConditions?: Nullable<boolean>;
     dateGt?: Nullable<string>;
     dateLt?: Nullable<string>;
+    customFilters?: Nullable<CustomScalar>;
 }
 
 export class CreateProductInput {

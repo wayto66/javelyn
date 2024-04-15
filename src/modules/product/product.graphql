@@ -44,6 +44,7 @@ input FiltersInput {
   demandAllConditions: Boolean
   dateGt: String
   dateLt: String
+  customFilters: CustomScalar
 }
 
 input CreateProductInput {

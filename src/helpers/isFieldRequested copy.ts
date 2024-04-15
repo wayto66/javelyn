@@ -4,19 +4,16 @@ export const isFieldRequested = (
   info: GraphQLResolveInfo,
   fieldName: string,
 ): boolean | Record<string, any> => {
-  // Ajustado para permitir retorno de objetos aninhados
   const firstLevelSelectionSets = info.fieldNodes[0].selectionSet.selections;
 
   for (const selection of firstLevelSelectionSets) {
     const verify = verifySelection(selection, fieldName);
     if (verify.success) {
-      // Utilize mountPrismaIncludeObject para construir o objeto de seleção, incluindo seleções aninhadas
       const includeSchema = mountPrismaIncludeObject(verify.schema);
-      console.log({ includeSchema });
-      // Se o includeSchema for um objeto (indicando seleções aninhadas), retorne o objeto; caso contrário, retorne true
-      return typeof includeSchema === "object"
-        ? { select: includeSchema }
-        : true;
+      if (typeof includeSchema === "boolean") return true;
+      return {
+        select: includeSchema,
+      };
     }
   }
 };
@@ -44,10 +41,9 @@ const verifySelection = (
 
 const mountPrismaIncludeObject = (
   schema?: readonly SelectionNode[],
-): boolean | Record<string, any> => {
+): boolean | Record<string, true> => {
   if (!schema) return true;
-
-  const prismaIncludeSchema: Record<string, any> = {};
+  const prismaIncludeSchema: Record<string, true> = {};
   for (const selection of schema) {
     if (
       !("name" in selection) ||
@@ -55,13 +51,7 @@ const mountPrismaIncludeObject = (
       selection.name.value === "__typename"
     )
       continue;
-
-    const nestedSelections =
-      "selectionSet" in selection && selection.selectionSet
-        ? mountPrismaIncludeObject(selection.selectionSet.selections)
-        : true;
-
-    prismaIncludeSchema[selection.name.value] = { select: nestedSelections };
+    prismaIncludeSchema[selection.name.value] = true;
   }
   return prismaIncludeSchema;
 };

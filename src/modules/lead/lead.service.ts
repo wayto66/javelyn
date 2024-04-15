@@ -98,14 +98,30 @@ export class LeadService {
       userId,
       companyId,
       CPF,
+      customFilters: inputCustomFilters,
     } = filters;
+
+    let customFilters;
+
+    if (inputCustomFilters && Object.entries(inputCustomFilters).length > 0) {
+      customFilters = [];
+      for (const [key, value] of Object.entries(inputCustomFilters)) {
+        customFilters.push({
+          customFields: {
+            path: [key],
+            equals: value,
+          },
+        });
+      }
+    }
 
     const isFiltersEmpty = (filters: FiltersInput) => {
       if (
         filters.name?.length > 0 ||
         filters.phone?.length > 0 ||
         filters.CPF?.length > 0 ||
-        filters.tagIds?.length > 0
+        filters.tagIds?.length > 0 ||
+        customFilters
       )
         return false;
       return true;
@@ -152,8 +168,8 @@ export class LeadService {
                   },
                 }
               : {},
-
             { tags: tagIdsFilter },
+            ...(customFilters ?? []),
           ],
           isActive: includeInactive ? undefined : true,
           companyId,

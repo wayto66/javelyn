@@ -6,14 +6,21 @@ import { AllExceptionFilter } from "./infra/common/filter/all.exception.filter";
 import { LoggerService } from "./infra/common/logger/logger.service";
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync(
-      "../../../etc/letsencrypt/live/javelyn.link/privkey.pem",
-    ),
-    cert: fs.readFileSync(
-      "../../../etc/letsencrypt/live/javelyn.link/fullchain.pem",
-    ),
-  };
+  const keyPath = "../../../etc/letsencrypt/live/javelyn.link/privkey.pem";
+  const certPath = "../../../etc/letsencrypt/live/javelyn.link/fullchain.pem";
+
+  let httpsOptions;
+
+  if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+    httpsOptions = {
+      key: fs.readFileSync(keyPath),
+      cert: fs.readFileSync(certPath),
+    };
+  } else {
+    console.log(
+      "Arquivos de chave ou certificado não encontrados. HTTPS não será configurado.",
+    );
+  }
   const app = await NestFactory.create(AppModule, { httpsOptions });
 
   process.on("uncaughtException", (err) => {
