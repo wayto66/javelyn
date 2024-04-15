@@ -7,6 +7,7 @@ import { join } from "path";
 import { PrismaModule } from "prisma/prisma.module";
 import { EncryptModule } from "./handlers/encrypt/encrypt.module";
 import { GatewayModule } from "./handlers/gateway/gateway.module";
+import { CheckController } from "./health-check/check.controller";
 import { ExceptionModule } from "./infra/common/exception/exception.module";
 import { AttributeModule } from "./modules/attribute/attribute.module";
 import { AuthModule } from "./modules/auth/auth.module";
@@ -59,5 +60,6 @@ import { WhatsappModule } from "./modules/whatsapp/whatsapp.module";
     TaskCategoryModule,
     AttributeModule,
   ],
+  controllers: [CheckController],
 })
 export class AppModule {}
