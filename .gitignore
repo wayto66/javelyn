@@ -1,6 +1,10 @@
 # compiled output
 /dist
 /node_modules
+/.wwebjs_auth
+/.wwebjs_cache
+.env
+.gitignore
 
 # Logs
 logs

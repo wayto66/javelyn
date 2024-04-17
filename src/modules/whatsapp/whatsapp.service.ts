@@ -12,7 +12,7 @@ import {
   WhatsappConnectionResponse,
 } from "src/graphql";
 import { GatewayService } from "src/handlers/gateway/gateway.service";
-import { Client, LocalAuth, MessageMedia } from "whatsapp-web.js";
+import { Client, MessageMedia } from "whatsapp-web.js";
 
 @Injectable()
 export class WhatsappService {
@@ -292,13 +292,7 @@ export class WhatsappService {
     const client = this.clientsMap.get(`wweb-client-${user.id}`);
 
     if (!client) {
-      const client = new Client({
-        authStrategy: new LocalAuth({ clientId: "client-" + user.id }),
-        puppeteer: {
-          args: ["--no-sandbox"],
-          headless: true,
-        },
-      });
+      const client = new Client({});
       this.clientsMap.set(`wweb-client-${user.id}`, client);
       console.log(
         `client created and registered for user: #${user.id} ${user.name}`,

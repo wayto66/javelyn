@@ -1,7 +1,7 @@
-import { OnModuleInit } from "@nestjs/common";
+import { Inject, OnModuleInit, forwardRef } from "@nestjs/common";
 import { WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server } from "socket.io";
-import { Client } from "whatsapp-web.js";
+import { WhatsappService } from "src/modules/whatsapp/whatsapp.service";
 
 @WebSocketGateway({
   cors: {
@@ -12,6 +12,10 @@ import { Client } from "whatsapp-web.js";
   },
 })
 export class GatewayService implements OnModuleInit {
+  constructor(
+    @Inject(forwardRef(() => WhatsappService))
+    private whatsappService: WhatsappService,
+  ) {}
   @WebSocketServer()
   server: Server;
 
@@ -29,14 +33,10 @@ export class GatewayService implements OnModuleInit {
       socket.join(`ws-room-${companyId}`);
       socket.join(`ws-solo-room-${userId}`);
 
-      // const isRegistered = container.isRegistered<Client | string>(
-      //   "zapClient-" + userId,
-      // );
-      // const client = isRegistered
-      //   ? container.resolve<Client | string>("zapClient-" + userId)
-      //   : undefined;
+      const client = this.whatsappService.clientsMap.get(
+        `wweb-client-${userId}`,
+      );
 
-      let client: string | Client;
       let state: string;
       if (!client || typeof client === "string") {
         state = "disconnected";
@@ -44,7 +44,7 @@ export class GatewayService implements OnModuleInit {
         state = await client.getState();
       }
 
-      if (!client || client === "disconnected" || state === "disconnected") {
+      if (!client || state === "disconnected") {
         this.server.to(`ws-solo-room-${userId}`).emit("client-disconnected");
       }
       if (state === "CONNECTED" && typeof client !== "string") {

@@ -495,7 +495,7 @@ export abstract class IQuery {
 
     abstract task(id: number): Nullable<Task> | Promise<Nullable<Task>>;
 
-    abstract taskCategories(page: number, pageSize: number): FindManyTaskCategoryResponse | Promise<FindManyTaskCategoryResponse>;
+    abstract taskCategories(page: number, pageSize: number, filters?: Nullable<FiltersInput>): FindManyTaskCategoryResponse | Promise<FindManyTaskCategoryResponse>;
 
     abstract taskCategory(id: number): Nullable<TaskCategory> | Promise<Nullable<TaskCategory>>;
 

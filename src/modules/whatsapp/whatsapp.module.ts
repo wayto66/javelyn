@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { PrismaModule } from "prisma/prisma.module";
 import { GatewayModule } from "src/handlers/gateway/gateway.module";
 import { ExceptionModule } from "src/infra/common/exception/exception.module";
@@ -8,10 +8,10 @@ import { WhatsappService } from "./whatsapp.service";
 
 @Module({
   imports: [
+    forwardRef(() => GatewayModule),
     PrismaModule,
     WhatsappModule,
     ExceptionModule,
-    GatewayModule,
     UserModule,
   ],
   providers: [WhatsappResolver, WhatsappService],

@@ -1,6 +1,11 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { CreateTaskCategoryInput, UpdateTaskCategoryInput } from "src/graphql";
+import { Args, Info, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { GraphQLResolveInfo } from "graphql";
+import {
+  CreateTaskCategoryInput,
+  FiltersInput,
+  UpdateTaskCategoryInput,
+} from "src/graphql";
 import { AuthGuard } from "src/infra/common/guard/auth.guard";
 import { TaskCategoryService } from "./taskCategory.service";
 
@@ -18,8 +23,13 @@ export class TaskCategoryResolver {
   }
 
   @Query("taskCategories")
-  findAll(@Args("page") page: number, @Args("pageSize") pageSize: number) {
-    return this.taskCategoryService.findAll(page, pageSize);
+  findAll(
+    @Args("page") page: number,
+    @Args("pageSize") pageSize: number,
+    @Args("filters") filters: FiltersInput,
+    @Info() info: GraphQLResolveInfo,
+  ) {
+    return this.taskCategoryService.findAll(info, page, pageSize, filters);
   }
 
   @UseGuards(AuthGuard)

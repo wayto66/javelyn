@@ -29,7 +29,11 @@ type FindManyTaskCategoryResponse {
 }
 
 type Query {
-  taskCategories(page: Int!, pageSize: Int!): FindManyTaskCategoryResponse!
+  taskCategories(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyTaskCategoryResponse!
   taskCategory(id: Int!): TaskCategory
 }
 
