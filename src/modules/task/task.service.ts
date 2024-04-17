@@ -198,6 +198,7 @@ export class TaskService {
       observation,
       title,
       userId,
+      targetDate,
     } = updateTaskInput;
     return this.prismaService.task.update({
       where: {
@@ -213,6 +214,7 @@ export class TaskService {
         observation,
         title,
         userId,
+        targetDate,
       },
       include: {
         tags: isFieldRequested(info, "tags"),
