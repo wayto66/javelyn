@@ -12,7 +12,7 @@ import {
   WhatsappConnectionResponse,
 } from "src/graphql";
 import { GatewayService } from "src/handlers/gateway/gateway.service";
-import { Client, MessageMedia } from "whatsapp-web.js";
+import { Client, MessageMedia, NoAuth } from "whatsapp-web.js";
 
 @Injectable()
 export class WhatsappService {
@@ -282,17 +282,28 @@ export class WhatsappService {
         qrCode: "",
       };
 
-    // if (user.company.customFields.whatsappFreeSlots === 0)
-    //   return {
-    //     isConnected: false,
-    //     qrCode: "",
-    //     message: `Todas as vagas de conexão ao whatsapp estão ocupadas nessa unidade.`,
-    //   };
+    if ((user.company.customFields as any).whatsappFreeSlots === 0)
+      return {
+        isConnected: false,
+        qrCode: "",
+        message: `Todas as vagas de conexão ao whatsapp estão ocupadas nessa unidade.`,
+      };
 
     const client = this.clientsMap.get(`wweb-client-${user.id}`);
 
     if (!client) {
-      const client = new Client({});
+      const client = new Client({
+        authStrategy: new NoAuth(),
+        puppeteer: {
+          executablePath:
+            "C:/Program Files/Google/Chrome/Application/chrome.exe",
+        },
+        webVersionCache: {
+          type: "remote",
+          remotePath:
+            "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html",
+        },
+      });
       this.clientsMap.set(`wweb-client-${user.id}`, client);
       console.log(
         `client created and registered for user: #${user.id} ${user.name}`,
