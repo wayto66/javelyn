@@ -86,8 +86,8 @@ export class QuoteService {
             !dateGt && !dateLt
               ? undefined
               : {
-                  gt: dateGt ? new Date(dateGt) : undefined,
-                  lt: dateLt ? new Date(dateLt) : undefined,
+                  gt: dateGt,
+                  lt: dateLt,
                 },
           companyId,
         }
@@ -119,8 +119,8 @@ export class QuoteService {
           ],
           isActive: includeInactive ? undefined : true,
           createdAt: {
-            gt: dateGt ? new Date(dateGt) : undefined,
-            lt: dateLt ? new Date(dateLt) : undefined,
+            gt: dateGt,
+            lt: dateLt,
           },
           companyId,
         };

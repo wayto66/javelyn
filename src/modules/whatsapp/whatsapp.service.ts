@@ -155,7 +155,7 @@ export class WhatsappService {
     if (!client) throw new Error("Sem conexão.");
     if (!leadIds && !phoneNumbers) throw new Error("Sem alvos.");
 
-    if (!leadIds) {
+    if (!leadIds && leadIds.length === 0) {
       for (const phone of phoneNumbers) {
         if (phone.toString().length < 8) {
           console.log("Invalid phone number: " + phone);
