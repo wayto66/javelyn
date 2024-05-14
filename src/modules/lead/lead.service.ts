@@ -145,10 +145,13 @@ export class LeadService {
           isActive: includeInactive ? undefined : true,
           companyId,
           userId,
-          createdAt: {
-            gt: dateGt ? dateGt : undefined,
-            lt: dateGt ? dateLt : undefined,
-          },
+          createdAt:
+            dateGt && dateLt
+              ? {
+                  gt: dateGt,
+                  lt: dateLt,
+                }
+              : undefined,
         }
       : {
           [demandAllConditions ? "AND" : "OR"]: [
@@ -184,10 +187,13 @@ export class LeadService {
           isActive: includeInactive ? undefined : true,
           companyId,
           userId,
-          createdAt: {
-            gt: dateGt ? dateGt : undefined,
-            lt: dateGt ? dateLt : undefined,
-          },
+          createdAt:
+            dateGt && dateLt
+              ? {
+                  gt: dateGt,
+                  lt: dateLt,
+                }
+              : undefined,
         };
 
     const total = await this.prismaService.lead.findMany({

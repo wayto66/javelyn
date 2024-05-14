@@ -88,10 +88,13 @@ export class TicketService {
     const where = isFiltersEmpty(filters)
       ? {
           isActive: includeInactive ? undefined : true,
-          createdAt: {
-            gt: dateGt,
-            lt: dateLt,
-          },
+          createdAt:
+            dateGt && dateLt
+              ? {
+                  gt: dateGt,
+                  lt: dateLt,
+                }
+              : undefined,
 
           companyId,
         }
@@ -122,10 +125,13 @@ export class TicketService {
               : {},
           ],
           isActive: includeInactive ? undefined : true,
-          createdAt: {
-            gt: dateGt,
-            lt: dateLt,
-          },
+          createdAt:
+            dateGt && dateLt
+              ? {
+                  gt: dateGt,
+                  lt: dateLt,
+                }
+              : undefined,
           companyId,
         };
 

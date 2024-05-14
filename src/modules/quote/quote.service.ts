@@ -83,12 +83,12 @@ export class QuoteService {
       ? {
           isActive: includeInactive ? undefined : true,
           createdAt:
-            !dateGt && !dateLt
-              ? undefined
-              : {
+            dateGt && dateLt
+              ? {
                   gt: dateGt,
                   lt: dateLt,
-                },
+                }
+              : undefined,
           companyId,
         }
       : {
@@ -118,10 +118,13 @@ export class QuoteService {
               : {},
           ],
           isActive: includeInactive ? undefined : true,
-          createdAt: {
-            gt: dateGt,
-            lt: dateLt,
-          },
+          createdAt:
+            dateGt && dateLt
+              ? {
+                  gt: dateGt,
+                  lt: dateLt,
+                }
+              : undefined,
           companyId,
         };
 
