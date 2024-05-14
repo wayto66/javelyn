@@ -294,10 +294,6 @@ export class WhatsappService {
     if (!client) {
       const client = new Client({
         authStrategy: new NoAuth(),
-        puppeteer: {
-          executablePath:
-            "C:/Program Files/Google/Chrome/Application/chrome.exe",
-        },
         webVersionCache: {
           type: "remote",
           remotePath:
