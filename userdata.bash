@@ -1,5 +1,6 @@
 #!/bin/bash
 # Navega para o diretório do projeto
+screen
 cd /home/ec2-user/javelyn
 
 # Instala Node.js e npm se não estiverem instalados

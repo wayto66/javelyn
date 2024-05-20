@@ -22,6 +22,7 @@ async function bootstrap() {
     );
   }
   const app = await NestFactory.create(AppModule, { httpsOptions });
+  const httpApp = await NestFactory.create(AppModule);
 
   process.on("uncaughtException", (err) => {
     console.error("\x1b[31m%s\x1b[0m", "UNCAUGHT EXCEPTION!");
@@ -52,6 +53,7 @@ async function bootstrap() {
   });
 
   await app.listen(4000);
+  await httpApp.listen(5000);
 }
 
 bootstrap();
