@@ -13,6 +13,7 @@ npm install pm2 -g
 # Instala as dependências do projeto
 npm install
 
+
 # Define a variável de ambiente para a conexão do banco de dados
 export DATABASE_URL="postgresql://postgres:videoboy66@javelyn-lite-db.cj0yq6yr0kqf.sa-east-1.rds.amazonaws.com:5432/javelyn-lite-db?schema=public" 
 

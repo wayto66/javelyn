@@ -294,6 +294,9 @@ export class WhatsappService {
     if (!client) {
       const client = new Client({
         authStrategy: new NoAuth(),
+        puppeteer: {
+          headless: true,
+        },
         webVersionCache: {
           type: "remote",
           remotePath:
