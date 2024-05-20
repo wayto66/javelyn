@@ -21,8 +21,10 @@ async function bootstrap() {
       "Arquivos de chave ou certificado não encontrados. HTTPS não será configurado.",
     );
   }
-  const app = await NestFactory.create(AppModule, { httpsOptions });
-  const httpApp = await NestFactory.create(AppModule);
+  const app =
+    process.env.ENVIRONMENT === "dev"
+      ? await NestFactory.create(AppModule)
+      : await NestFactory.create(AppModule, { httpsOptions });
 
   process.on("uncaughtException", (err) => {
     console.error("\x1b[31m%s\x1b[0m", "UNCAUGHT EXCEPTION!");
@@ -53,7 +55,6 @@ async function bootstrap() {
   });
 
   await app.listen(4000);
-  await httpApp.listen(5000);
 }
 
 bootstrap();
