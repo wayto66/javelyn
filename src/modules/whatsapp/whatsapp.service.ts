@@ -296,6 +296,7 @@ export class WhatsappService {
         authStrategy: new NoAuth(),
         puppeteer: {
           headless: true,
+          args: ["--no-sandbox"],
         },
         webVersionCache: {
           type: "remote",
