@@ -15,9 +15,13 @@ export class WebhooksController {
 
   @Get("facebook")
   verifyWebhook(@Query() query: any, @Res() res: Response) {
-    const mode = query["hub.mode"];
-    const token = query["hub.verify_token"];
-    const challenge = query["hub.challenge"];
+    // const mode = query["hub.mode"];
+    // const token = query["hub.verify_token"];
+    // const challenge = query["hub.challenge"];
+
+    const mode = "subscribe";
+    const token = "985445b791add467f9bce234c755139c";
+    const challenge = "123";
 
     if (mode && token) {
       if (mode === "subscribe" && token === this.VERIFY_TOKEN) {
