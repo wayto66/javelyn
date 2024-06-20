@@ -10,6 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum EPermissions {
+  THROW
+  TASK_CATEGORIES
+  SEE_ALL_LEADS
+  SEE_ALL_TASKS
+}
+
 model Company {
   id               Int            @id @default(autoincrement())
   name             String
@@ -201,7 +208,7 @@ model User {
   username    String @unique
   password    String
   name        String
-  permissions Json
+  permissions Json?
 
   zapQrcode String @default("")
   zapStatus String @default("disconnected")

@@ -12,7 +12,7 @@ export const isFieldRequested = (
     if (verify.success) {
       // Utilize mountPrismaIncludeObject para construir o objeto de seleção, incluindo seleções aninhadas
       const includeSchema = mountPrismaIncludeObject(verify.schema);
-      console.log({ includeSchema });
+
       // Se o includeSchema for um objeto (indicando seleções aninhadas), retorne o objeto; caso contrário, retorne true
       return typeof includeSchema === "object"
         ? { select: includeSchema }

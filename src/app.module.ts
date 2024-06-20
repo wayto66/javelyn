@@ -26,6 +26,7 @@ import { TicketModule } from "./modules/ticket/ticket.module";
 import { TicketProductModule } from "./modules/ticketProduct/ticketProduct.module";
 import { UserModule } from "./modules/user/user.module";
 import { WhatsappModule } from "./modules/whatsapp/whatsapp.module";
+import { WebhooksModule } from "./webhooks/webhooks.module";
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { WhatsappModule } from "./modules/whatsapp/whatsapp.module";
     WhatsappModule,
     TaskCategoryModule,
     AttributeModule,
+    WebhooksModule,
   ],
   controllers: [CheckController],
 })
