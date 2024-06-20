@@ -19,6 +19,8 @@ export class WebhooksController {
     // const token = query["hub.verify_token"];
     // const challenge = query["hub.challenge"];
 
+    console.log(query);
+
     const mode = "subscribe";
     const token = "985445b791add467f9bce234c755139c";
     const challenge = "123";
