@@ -61,13 +61,13 @@ export class AuthService {
     }
   }
 
-  async signIn(singInInput: SignInInput): Promise<AuthResponse> {
+  async signIn(signInInput: SignInInput): Promise<AuthResponse> {
+    const { username, password } = signInInput;
+    console.log({ username, password });
     const userExists = await this.prismaService.user.findFirst({
       where: {
-        username: singInInput.username,
-        password:
-          singInInput.password ??
-          this.encryptService.sha256(singInInput.password),
+        username,
+        password,
       },
     });
 
