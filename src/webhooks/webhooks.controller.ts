@@ -9,7 +9,6 @@ import {
 } from "@nestjs/common";
 import axios from "axios";
 import { Response } from "express";
-import { ILeadGenData } from "./dto";
 
 @Controller("webhooks")
 export class WebhooksController {
@@ -44,10 +43,10 @@ export class WebhooksController {
   }
 
   @Post("facebook")
-  async handleWebhook(@Body() body: ILeadGenData, @Res() res: Response) {
+  async handleWebhook(@Body() body: any, @Res() res: Response) {
     const { entry } = body;
 
-    console.log({ entry });
+    console.log(JSON.stringify(entry));
 
     const leadgenId = entry.value.leadgen_id;
 
