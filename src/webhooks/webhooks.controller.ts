@@ -45,7 +45,8 @@ export class WebhooksController {
 
   @Post("facebook")
   async handleWebhook(@Body() body: ILeadgenEvent, @Res() res: Response) {
-    const { changes } = body;
+    const { entry } = body;
+    const { changes } = entry;
 
     console.log(JSON.stringify(body));
 

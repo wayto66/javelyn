@@ -8,12 +8,15 @@ export interface ILeadgenValue {
 }
 
 export interface ILeadgenChange {
-  field: string;
+  field: "leadgen";
   value: ILeadgenValue;
 }
 
 export interface ILeadgenEvent {
-  id: string;
-  time: number;
-  changes: ILeadgenChange[];
+  object: "page";
+  entry: {
+    id: string;
+    time: number;
+    changes: ILeadgenChange[];
+  };
 }
