@@ -8,6 +8,7 @@ import {
   Res,
 } from "@nestjs/common";
 import { Response } from "express";
+import { ILeadGenData } from "./dto";
 
 @Controller("webhooks")
 export class WebhooksController {
@@ -32,23 +33,10 @@ export class WebhooksController {
   }
 
   @Post("facebook")
-  handleWebhook(@Body() body: any, @Res() res: Response) {
-    const { object, entry } = body;
+  handleWebhook(@Body() body: ILeadGenData, @Res() res: Response) {
+    console.log({ body });
 
-    if (object === "page") {
-      entry.forEach((entry) => {
-        const { changes } = entry;
-        changes.forEach((change) => {
-          if (change.field === "leadgen") {
-            const lead = change.value;
-            console.log("Lead recebido:", lead);
-
-            // Aqui você pode adicionar a lógica para salvar o lead na sua base de dados
-            // ou processá-lo de acordo com sua necessidade.
-          }
-        });
-      });
-
+    if (body) {
       res.status(HttpStatus.OK).send("EVENT_RECEIVED");
     } else {
       res.sendStatus(HttpStatus.NOT_FOUND);
