@@ -22,3 +22,18 @@ export interface ILeadgenEvent {
   object: "page";
   entry: ILeadgenEntry[];
 }
+
+export interface ILojaIntegradaTicketData {
+  cliente: {
+    id: number;
+    email: string;
+    nome: string;
+    telefone_celular: string;
+    telefone_principal: string;
+    situacao: string;
+    data_nascimento: "1990-12-12";
+    sexo: "m" | "f";
+    data_criacao: Date;
+    data_modificacao: Date;
+  };
+}

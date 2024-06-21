@@ -9,11 +9,12 @@ import {
 } from "@nestjs/common";
 import axios from "axios";
 import { Response } from "express";
-import { ILeadgenEvent } from "./dto";
+import { ILeadgenEvent, ILojaIntegradaTicketData } from "./dto";
 
 @Controller("webhooks")
 export class WebhooksController {
   private readonly VERIFY_TOKEN = "985445b791add467f9bce234c755139c";
+  private readonly EAD_LI_VERIFY_TOKEN = "985445b791add467f9bce234c755139c";
   private readonly ACCESS_TOKEN =
     "EAAaQc0e2UXsBOzHinZCTWDhsZBbf10YaaT7lMb5BlVqIKw0ZCCrRa1z12uoKKj2RFo1ZBQUtCFlkiOcAWFvqQse1my3zZBteZBol3fGLrJEorZBgUdRpYOOuOZCu1jcMGb8B3f0UVXXbHQX3cYZBFBvHjDA850iRqs6bZCkkyZBDIinm6DZAsaEFjOyeidpFZA8coTgvbV4VfBy5VZA2TFVZBqQAIgZD";
 
@@ -63,7 +64,7 @@ export class WebhooksController {
     try {
       response = await axios.get(url);
     } catch (e: any) {
-      console.error(e);
+      console.error(e.message);
       res.status(HttpStatus.BAD_REQUEST).send(e.message);
     }
 
@@ -79,6 +80,42 @@ export class WebhooksController {
     )?.values[0];
 
     console.log({ name, email, phone, leadDetails });
+
+    if (body) {
+      res.status(HttpStatus.OK).send("EVENT_RECEIVED");
+    } else {
+      res.sendStatus(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Post("estiload-loja-integrada")
+  async handleWebhookEadLi(
+    @Body() body: ILojaIntegradaTicketData,
+    @Res() res: Response,
+  ) {
+    console.log("🧙‍♂️ LI WEBHOOK !");
+    console.log(JSON.stringify(body));
+    const { cliente } = body;
+
+    const {
+      nome,
+      email,
+      sexo,
+      situacao,
+      telefone_principal,
+      telefone_celular,
+      data_nascimento,
+    } = cliente;
+
+    console.log({
+      nome,
+      email,
+      sexo,
+      situacao,
+      telefone_principal,
+      telefone_celular,
+      data_nascimento,
+    });
 
     if (body) {
       res.status(HttpStatus.OK).send("EVENT_RECEIVED");
