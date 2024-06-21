@@ -48,8 +48,6 @@ export class WebhooksController {
     const { entry } = body;
     const { changes } = entry;
 
-    console.log(JSON.stringify(body));
-
     if (changes.length === 0)
       res.status(HttpStatus.BAD_REQUEST).send("No lead data found.");
 
