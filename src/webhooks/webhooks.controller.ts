@@ -9,6 +9,7 @@ import {
 } from "@nestjs/common";
 import axios from "axios";
 import { Response } from "express";
+import { ILeadgenEvent } from "./dto";
 
 @Controller("webhooks")
 export class WebhooksController {
@@ -43,12 +44,15 @@ export class WebhooksController {
   }
 
   @Post("facebook")
-  async handleWebhook(@Body() body: any, @Res() res: Response) {
-    const { entry } = body;
+  async handleWebhook(@Body() body: ILeadgenEvent, @Res() res: Response) {
+    const { changes } = body;
 
-    console.log(JSON.stringify(entry));
+    if (changes.length === 0)
+      res.status(HttpStatus.BAD_REQUEST).send("No lead data found.");
 
-    const leadgenId = entry.value.leadgen_id;
+    const lead = changes[0].value;
+
+    const leadgenId = lead.leadgen_id;
 
     const url = `https://graph.facebook.com/v12.0/${leadgenId}?access_token=${this.ACCESS_TOKEN}`;
     const response = await axios.get(url);
