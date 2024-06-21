@@ -12,11 +12,13 @@ export interface ILeadgenChange {
   value: ILeadgenValue;
 }
 
+export interface ILeadgenEntry {
+  id: string;
+  time: number;
+  changes: ILeadgenChange[];
+}
+
 export interface ILeadgenEvent {
   object: "page";
-  entry: {
-    id: string;
-    time: number;
-    changes: ILeadgenChange[];
-  };
+  entry: ILeadgenEntry[];
 }

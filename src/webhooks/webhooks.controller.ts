@@ -46,10 +46,13 @@ export class WebhooksController {
   @Post("facebook")
   async handleWebhook(@Body() body: ILeadgenEvent, @Res() res: Response) {
     const { entry } = body;
-    const { changes } = entry;
+    if (entry.length === 0)
+      res.status(HttpStatus.BAD_REQUEST).send("No lead entry found.");
+
+    const { changes } = entry[0];
 
     if (changes.length === 0)
-      res.status(HttpStatus.BAD_REQUEST).send("No lead data found.");
+      res.status(HttpStatus.BAD_REQUEST).send("No lead changes found.");
 
     const lead = changes[0].value;
 
