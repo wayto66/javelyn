@@ -7,12 +7,23 @@ import {
   Query,
   Res,
 } from "@nestjs/common";
+import axios from "axios";
 import { Response } from "express";
 import { ILeadGenData } from "./dto";
 
 @Controller("webhooks")
 export class WebhooksController {
   private readonly VERIFY_TOKEN = "985445b791add467f9bce234c755139c";
+  private readonly ACCESS_TOKEN =
+    "EAAaQc0e2UXsBO5pQPHJLobQa5oyZBr943lo9lHUPpvzTZAKujKykaEarg80ZC0isfE3Q9SWCin0UOmPLKhPzPei225NVviWQcSSbFTWZCkt23f5BnVVrmFknTdqJ0u145UJayQBLT7MuPxna5uFwhMmzkokPCd2nIf7U6ZAZBA0QMIBOVGBxb7zs8pIvYaaciiv1qlcSe3QTI9ekGsNV2maofIEbre";
+
+  private readonly COMPANY_BOT_ID_MAP: Record<
+    string,
+    {
+      userId: number;
+      companyId: number;
+    }
+  > = {};
 
   @Get("facebook")
   verifyWebhook(@Query() query: any, @Res() res: Response) {
@@ -33,8 +44,27 @@ export class WebhooksController {
   }
 
   @Post("facebook")
-  handleWebhook(@Body() body: ILeadGenData, @Res() res: Response) {
-    console.log({ body });
+  async handleWebhook(@Body() body: ILeadGenData, @Res() res: Response) {
+    const { entry } = body;
+
+    console.log({ entry });
+
+    const leadgenId = entry.value.leadgen_id;
+
+    const url = `https://graph.facebook.com/v12.0/${leadgenId}?access_token=${this.ACCESS_TOKEN}`;
+    const response = await axios.get(url);
+    const leadDetails = response.data;
+
+    const name = leadDetails.field_data.find(
+      (field) => field.name === "full_name",
+    )?.values[0];
+    const email = leadDetails.field_data.find((field) => field.name === "email")
+      ?.values[0];
+    const phone = leadDetails.field_data.find(
+      (field) => field.name === "phone_number",
+    )?.values[0];
+
+    console.log({ name, email, phone, leadDetails });
 
     if (body) {
       res.status(HttpStatus.OK).send("EVENT_RECEIVED");

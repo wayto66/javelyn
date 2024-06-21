@@ -20,8 +20,6 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log("🧙‍♂️ AUTH");
-
     const ctx = GqlExecutionContext.create(context);
     const req = ctx.getContext().req;
 
@@ -38,8 +36,6 @@ export class AuthGuard implements CanActivate {
       .replace(/,/g, "")
       .replaceAll("__typename", "");
 
-    console.log(operationString);
-
     const secret = process.env.HMAC_SECRET;
 
     if (!signature) {
@@ -50,8 +46,6 @@ export class AuthGuard implements CanActivate {
       .createHmac("sha256", secret)
       .update(operationString)
       .digest("hex");
-
-    console.log({ hash, signature });
 
     if (hash !== signature) {
       throw new UnauthorizedException("Invalid HMAC signature");
