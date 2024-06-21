@@ -15,7 +15,7 @@ import { ILeadgenEvent } from "./dto";
 export class WebhooksController {
   private readonly VERIFY_TOKEN = "985445b791add467f9bce234c755139c";
   private readonly ACCESS_TOKEN =
-    "EAAaQc0e2UXsBO5pQPHJLobQa5oyZBr943lo9lHUPpvzTZAKujKykaEarg80ZC0isfE3Q9SWCin0UOmPLKhPzPei225NVviWQcSSbFTWZCkt23f5BnVVrmFknTdqJ0u145UJayQBLT7MuPxna5uFwhMmzkokPCd2nIf7U6ZAZBA0QMIBOVGBxb7zs8pIvYaaciiv1qlcSe3QTI9ekGsNV2maofIEbre";
+    "EAAaQc0e2UXsBOzHinZCTWDhsZBbf10YaaT7lMb5BlVqIKw0ZCCrRa1z12uoKKj2RFo1ZBQUtCFlkiOcAWFvqQse1my3zZBteZBol3fGLrJEorZBgUdRpYOOuOZCu1jcMGb8B3f0UVXXbHQX3cYZBFBvHjDA850iRqs6bZCkkyZBDIinm6DZAsaEFjOyeidpFZA8coTgvbV4VfBy5VZA2TFVZBqQAIgZD";
 
   private readonly COMPANY_BOT_ID_MAP: Record<
     string,
@@ -59,7 +59,14 @@ export class WebhooksController {
     const leadgenId = lead.leadgen_id;
 
     const url = `https://graph.facebook.com/v12.0/${leadgenId}?access_token=${this.ACCESS_TOKEN}`;
-    const response = await axios.get(url);
+    let response: any;
+    try {
+      response = await axios.get(url);
+    } catch (e: any) {
+      console.error(e);
+      res.status(HttpStatus.BAD_REQUEST).send(e.message);
+    }
+
     const leadDetails = response.data;
 
     const name = leadDetails.field_data.find(
