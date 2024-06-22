@@ -10,9 +10,12 @@ import {
 import axios from "axios";
 import { Response } from "express";
 import { ILeadgenEvent, ILojaIntegradaTicketData } from "./dto";
+import { WebhooksService } from "./webhooks.service";
 
 @Controller("webhooks")
 export class WebhooksController {
+  constructor(private readonly webhooksService: WebhooksService) {}
+
   private readonly VERIFY_TOKEN = "985445b791add467f9bce234c755139c";
   private readonly EAD_LI_VERIFY_TOKEN = "985445b791add467f9bce234c755139c";
   private readonly ACCESS_TOKEN =
@@ -91,36 +94,32 @@ export class WebhooksController {
   @Post("estiload-loja-integrada")
   async handleWebhookEadLi(
     @Body() body: ILojaIntegradaTicketData,
-    @Res() res: Response,
+    // @Res() res: Response,
   ) {
     console.log("🧙‍♂️ LI WEBHOOK !");
-    console.log(JSON.stringify(body));
-    const { cliente } = body;
+    const { cliente, situacao } = body;
 
     const {
       nome,
       email,
       sexo,
-      situacao,
       telefone_principal,
       telefone_celular,
       data_nascimento,
     } = cliente;
 
-    console.log({
-      nome,
-      email,
-      sexo,
-      situacao,
-      telefone_principal,
-      telefone_celular,
+    const lead = await this.webhooksService.handleLiLead({
+      companyId: 7,
+      userId: 18,
       data_nascimento,
+      email,
+      nome,
+      sexo,
+      situacao: situacao.nome,
+      telefone_celular,
+      telefone_principal,
     });
 
-    if (body) {
-      res.status(HttpStatus.OK).send("EVENT_RECEIVED");
-    } else {
-      res.sendStatus(HttpStatus.NOT_FOUND);
-    }
+    return lead;
   }
 }
