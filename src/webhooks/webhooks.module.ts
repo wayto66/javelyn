@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { PrismaService } from "prisma/prisma.service";
+import { PrismaModule } from "prisma/prisma.module";
 import { WebhooksController } from "./webhooks.controller";
 import { WebhooksService } from "./webhooks.service";
 
@@ -7,6 +7,6 @@ import { WebhooksService } from "./webhooks.service";
   controllers: [WebhooksController],
   providers: [WebhooksService],
   exports: [WebhooksService],
-  imports: [PrismaService],
+  imports: [PrismaModule],
 })
 export class WebhooksModule {}
