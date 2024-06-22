@@ -96,30 +96,33 @@ export class WebhooksController {
     @Body() body: ILojaIntegradaTicketData,
     // @Res() res: Response,
   ) {
-    console.log("🧙‍♂️ LI WEBHOOK !");
-    const { cliente, situacao } = body;
+    try {
+      const { cliente, situacao } = body;
 
-    const {
-      nome,
-      email,
-      sexo,
-      telefone_principal,
-      telefone_celular,
-      data_nascimento,
-    } = cliente;
+      const {
+        nome,
+        email,
+        sexo,
+        telefone_principal,
+        telefone_celular,
+        data_nascimento,
+      } = cliente;
 
-    const lead = await this.webhooksService.handleLiLead({
-      companyId: 7,
-      userId: 18,
-      data_nascimento,
-      email,
-      nome,
-      sexo,
-      situacao: situacao.nome,
-      telefone_celular,
-      telefone_principal,
-    });
+      const lead = await this.webhooksService.handleLiLead({
+        companyId: 7,
+        userId: 18,
+        data_nascimento,
+        email,
+        nome,
+        sexo,
+        situacao: situacao.nome,
+        telefone_celular,
+        telefone_principal,
+      });
 
-    return lead;
+      return lead;
+    } catch (e: any) {
+      return e.message;
+    }
   }
 }

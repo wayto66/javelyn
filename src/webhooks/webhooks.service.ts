@@ -17,16 +17,18 @@ export class WebhooksService {
     companyId,
     userId,
   }: IHandleLiLeadParams) {
-    const lead = await this.prismaService.lead.findFirst({
+    const leadCheck = await this.prismaService.lead.findFirst({
       where: {
         name: nome,
         companyId,
       },
     });
 
-    const customFields: Record<string, any> = {
-      ...(lead.customFields as object),
-    };
+    const customFields: Record<string, any> = leadCheck
+      ? {
+          ...(leadCheck.customFields as object),
+        }
+      : {};
 
     customFields.Situacao = situacao;
     customFields.Sexo = sexo;
@@ -50,7 +52,7 @@ export class WebhooksService {
       birthdayDay = Number(data_nascimento.split("-")[2]);
     }
 
-    await this.prismaService.lead.upsert({
+    const lead = await this.prismaService.lead.upsert({
       where: {
         companyId_name_phone: {
           companyId,
