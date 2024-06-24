@@ -541,6 +541,8 @@ export abstract class IMutation {
 
     abstract createLeads(createLeadsInput: CreateLeadsInput): CreateLeadsResponse | Promise<CreateLeadsResponse>;
 
+    abstract importWhatsappLeads(importWhatsappLeadsInput: CreateLeadsInput): CreateLeadsResponse | Promise<CreateLeadsResponse>;
+
     abstract updateLead(updateLeadInput: UpdateLeadInput): Lead | Promise<Lead>;
 
     abstract removeLead(id: number): Nullable<Lead> | Promise<Nullable<Lead>>;

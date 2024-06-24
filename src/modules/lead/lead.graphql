@@ -122,6 +122,9 @@ type CreateLeadsResponse {
 type Mutation {
   createLead(createLeadInput: CreateLeadInput!): CreateLeadResponse!
   createLeads(createLeadsInput: CreateLeadsInput!): CreateLeadsResponse!
+  importWhatsappLeads(
+    importWhatsappLeadsInput: CreateLeadsInput!
+  ): CreateLeadsResponse!
   updateLead(updateLeadInput: UpdateLeadInput!): Lead!
   removeLead(id: Int!): Lead
 }

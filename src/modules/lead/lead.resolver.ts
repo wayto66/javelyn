@@ -27,6 +27,15 @@ export class LeadResolver {
   }
 
   @UseGuards(AuthGuard)
+  @Mutation("importWhatsappLeads")
+  importWhatsapp(
+    @Args("importWhatsappLeadsInput")
+    importWhatsappLeadsInput: CreateLeadsInput,
+  ) {
+    return this.leadService.importWhatsapp(importWhatsappLeadsInput);
+  }
+
+  @UseGuards(AuthGuard)
   @Query("leads")
   findAll(
     @Args("page") page: number,

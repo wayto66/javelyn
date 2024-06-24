@@ -82,6 +82,49 @@ export class LeadService {
     };
   }
 
+  async importWhatsapp(importWhatsappLeadsInput: CreateLeadsInput) {
+    const leadsData = importWhatsappLeadsInput.leads as {
+      name: string;
+      phone: string;
+      companyId: number;
+      userId: number;
+    }[];
+
+    const leadCreations = leadsData.map((data) =>
+      this.prismaService.lead
+        .upsert({
+          where: {
+            companyId_name_phone: {
+              companyId: data.companyId,
+              phone: data.phone,
+              name: data.name,
+            },
+          },
+          create: {
+            companyId: data.companyId,
+            phone: data.phone,
+            name: data.name,
+            userId: data.userId,
+          },
+          update: {},
+        })
+        .catch(() => {
+          console.error("Erro ao criar lead:", data.name);
+          return null;
+        }),
+    );
+
+    const results = await Promise.allSettled(leadCreations);
+
+    const successfulCreations = results.filter(
+      (result) => result.status === "fulfilled" && result.value !== null,
+    ).length;
+
+    return {
+      count: successfulCreations,
+    };
+  }
+
   async findAll(
     info: GraphQLResolveInfo,
     page: number,

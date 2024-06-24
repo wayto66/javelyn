@@ -6,17 +6,20 @@ import { IHandleLiLeadParams } from "./dto";
 export class WebhooksService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async handleLiLead({
-    data_nascimento,
-    email,
-    nome,
-    sexo,
-    situacao,
-    telefone_celular,
-    telefone_principal,
-    companyId,
-    userId,
-  }: IHandleLiLeadParams) {
+  async handleLiLead(data: IHandleLiLeadParams) {
+    console.log(data);
+
+    const {
+      data_nascimento,
+      email,
+      nome,
+      sexo,
+      situacao,
+      telefone_celular,
+      telefone_principal,
+      companyId,
+      userId,
+    } = data;
     const leadCheck = await this.prismaService.lead.findFirst({
       where: {
         name: nome,

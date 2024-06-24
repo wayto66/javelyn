@@ -96,6 +96,7 @@ export class WebhooksController {
     @Body() body: ILojaIntegradaTicketData,
     // @Res() res: Response,
   ) {
+    console.log("🧙‍♂️ LI LEAD WEBHOOK");
     try {
       const { cliente, situacao } = body;
 
