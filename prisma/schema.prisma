@@ -10,13 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum EPermissions {
-  THROW
-  TASK_CATEGORIES
-  SEE_ALL_LEADS
-  SEE_ALL_TASKS
-}
-
 model Company {
   id               Int            @id @default(autoincrement())
   name             String
@@ -83,9 +76,10 @@ model Ticket {
 
   isActive Boolean @default(true)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  tags      Tag[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt()
+  tags              Tag[]
+  ticketPermissions TicketPermission[]
 }
 
 model TicketProduct {
@@ -167,9 +161,10 @@ model Lead {
   isRescue Boolean @default(false)
   isActive Boolean @default(true)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  tags      Tag[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt()
+  tags            Tag[]
+  leadPermissions LeadPermission[]
 
   @@unique([companyId, name, phone])
   @@unique([companyId, CPF])
@@ -203,12 +198,11 @@ model TaskCategory {
 }
 
 model User {
-  id          Int    @id @default(autoincrement())
-  companyId   Int
-  username    String @unique
-  password    String
-  name        String
-  permissions Json?
+  id        Int    @id @default(autoincrement())
+  companyId Int
+  username  String @unique
+  password  String
+  name      String
 
   zapQrcode String @default("")
   zapStatus String @default("disconnected")
@@ -221,9 +215,14 @@ model User {
   leads      Lead[]
   attributes Attribute[]
 
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  isActive          Boolean            @default(true)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now())
+  permissions       Permission[]
+  leadPermissions   LeadPermission[]
+  taskPermissions   TaskPermission[]
+  quotePermisions   QuotePermision[]
+  ticketPermissions TicketPermission[]
 }
 
 model Throw {
@@ -255,12 +254,13 @@ model Task {
   user     User         @relation(fields: [userId], references: [id])
   company  Company      @relation(fields: [companyId], references: [id])
 
-  isHandled  Boolean   @default(false)
-  isActive   Boolean   @default(true)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt()
-  targetDate DateTime
-  handledAt  DateTime?
+  isHandled       Boolean          @default(false)
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt()
+  targetDate      DateTime
+  handledAt       DateTime?
+  taskPermissions TaskPermission[]
 }
 
 model Quote {
@@ -282,10 +282,11 @@ model Quote {
   user     User           @relation(fields: [userId], references: [id])
   lead     Lead           @relation(fields: [leadId], references: [id])
 
-  handledAt DateTime?
-  isActive  Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  handledAt       DateTime?
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now())
+  quotePermisions QuotePermision[]
 }
 
 enum AtributeType {
@@ -302,6 +303,7 @@ enum AtributeValueType {
   STRING_ARRAY
   NUMBER_ARRAY
   JSON
+  DATE
 }
 
 model Attribute {
@@ -321,4 +323,63 @@ model Attribute {
   isActive  Boolean   @default(true)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
+}
+
+enum EPermission {
+  FULL_ACCESS
+  THROW
+  TASK_CATEGORIES_CREATE
+  ATTRIBUTES_CREATE
+  LEADS_SEE_ALL
+  TASKS_SEE_ALL
+}
+
+model Permission {
+  id    Int         @id @default(autoincrement())
+  name  EPermission @unique
+  users User[]
+}
+
+model LeadPermission {
+  id      Int     @id @default(autoincrement())
+  leadId  Int
+  userId  Int
+  canEdit Boolean
+  lead    Lead    @relation(fields: [leadId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([leadId, userId])
+}
+
+model TaskPermission {
+  id      Int     @id @default(autoincrement())
+  taskId  Int
+  userId  Int
+  canEdit Boolean
+  task    Task    @relation(fields: [taskId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([taskId, userId])
+}
+
+model QuotePermision {
+  id      Int     @id @default(autoincrement())
+  quoteId Int
+  userId  Int
+  canEdit Boolean
+  quote   Quote   @relation(fields: [quoteId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([quoteId, userId])
+}
+
+model TicketPermission {
+  id       Int     @id @default(autoincrement())
+  ticketId Int
+  userId   Int
+  canEdit  Boolean
+  ticket   Ticket  @relation(fields: [ticketId], references: [id])
+  user     User    @relation(fields: [userId], references: [id])
+
+  @@unique([ticketId, userId])
 }
