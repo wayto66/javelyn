@@ -7,7 +7,6 @@ import {
   Query,
   Res,
 } from "@nestjs/common";
-import axios from "axios";
 import { Response } from "express";
 import { ILeadgenEvent, ILojaIntegradaTicketData } from "./dto";
 import { WebhooksService } from "./webhooks.service";
@@ -49,46 +48,9 @@ export class WebhooksController {
 
   @Post("facebook")
   async handleWebhook(@Body() body: ILeadgenEvent, @Res() res: Response) {
-    const { entry } = body;
-    if (entry.length === 0)
-      res.status(HttpStatus.BAD_REQUEST).send("No lead entry found.");
+    console.log(body);
 
-    const { changes } = entry[0];
-
-    if (changes.length === 0)
-      res.status(HttpStatus.BAD_REQUEST).send("No lead changes found.");
-
-    const lead = changes[0].value;
-
-    const leadgenId = lead.leadgen_id;
-
-    const url = `https://graph.facebook.com/v12.0/${leadgenId}?access_token=${this.ACCESS_TOKEN}`;
-    let response: any;
-    try {
-      response = await axios.get(url);
-    } catch (e: any) {
-      console.error(e.message);
-      res.status(HttpStatus.BAD_REQUEST).send(e.message);
-    }
-
-    const leadDetails = response.data;
-
-    const name = leadDetails.field_data.find(
-      (field) => field.name === "full_name",
-    )?.values[0];
-    const email = leadDetails.field_data.find((field) => field.name === "email")
-      ?.values[0];
-    const phone = leadDetails.field_data.find(
-      (field) => field.name === "phone_number",
-    )?.values[0];
-
-    console.log({ name, email, phone, leadDetails });
-
-    if (body) {
-      res.status(HttpStatus.OK).send("EVENT_RECEIVED");
-    } else {
-      res.sendStatus(HttpStatus.NOT_FOUND);
-    }
+    res.status(HttpStatus.OK);
   }
 
   @Post("estiload-loja-integrada")
