@@ -91,6 +91,23 @@ export class UpdateCompanyInput {
     customFields?: Nullable<CustomScalar>;
 }
 
+export class CreateLeadPermissionInput {
+    leadId: number;
+    userId: number;
+    canEdit: boolean;
+}
+
+export class CreateLeadPermissionsInput {
+    leadPermissions: CreateLeadPermissionInput[];
+}
+
+export class UpdateLeadPermissionInput {
+    id: number;
+    leadId?: Nullable<number>;
+    userId?: Nullable<number>;
+    canEdit?: Nullable<boolean>;
+}
+
 export class CreateLeadInput {
     companyId: number;
     userId: number;
@@ -271,6 +288,23 @@ export class UpdateTagInput {
     ticketsIds?: Nullable<Nullable<number>[]>;
     productsIds?: Nullable<Nullable<number>[]>;
     isActive?: Nullable<boolean>;
+}
+
+export class CreateTaskPermissionInput {
+    taskId: number;
+    userId: number;
+    canEdit: boolean;
+}
+
+export class CreateTaskPermissionsInput {
+    taskPermissions: CreateTaskPermissionInput[];
+}
+
+export class UpdateTaskPermissionInput {
+    id: number;
+    taskId?: Nullable<number>;
+    userId?: Nullable<number>;
+    canEdit?: Nullable<boolean>;
 }
 
 export class CreateTaskInput {
@@ -467,6 +501,10 @@ export abstract class IQuery {
 
     abstract company(id?: Nullable<number>): Nullable<Company> | Promise<Nullable<Company>>;
 
+    abstract leadPermissions(page: number, pageSize: number, filters?: Nullable<FiltersInput>): FindManyLeadPermissionsResponse | Promise<FindManyLeadPermissionsResponse>;
+
+    abstract leadPermission(id: number): Nullable<leadPermission> | Promise<Nullable<leadPermission>>;
+
     abstract leads(page: number, pageSize: number, filters?: Nullable<FiltersInput>): FindManyLeadsResponse | Promise<FindManyLeadsResponse>;
 
     abstract lead(id: number): Nullable<Lead> | Promise<Nullable<Lead>>;
@@ -490,6 +528,10 @@ export abstract class IQuery {
     abstract tags(page: number, pageSize: number, filters?: Nullable<FiltersInput>): FindManyTagReponse | Promise<FindManyTagReponse>;
 
     abstract tag(id: number): Nullable<Tag> | Promise<Nullable<Tag>>;
+
+    abstract taskPermissions(page: number, pageSize: number, filters?: Nullable<FiltersInput>): FindManyTaskPermissionsResponse | Promise<FindManyTaskPermissionsResponse>;
+
+    abstract taskPermission(id: number): Nullable<taskPermission> | Promise<Nullable<taskPermission>>;
 
     abstract tasks(page: number, pageSize: number, filters?: Nullable<FiltersInput>): FindManyTasksResponse | Promise<FindManyTasksResponse>;
 
@@ -537,6 +579,14 @@ export abstract class IMutation {
 
     abstract removeCompany(id: number): Nullable<Company> | Promise<Nullable<Company>>;
 
+    abstract createLeadPermission(createLeadPermissionInput: CreateLeadPermissionInput): CreateleadPermissionResponse | Promise<CreateleadPermissionResponse>;
+
+    abstract createLeadPermissions(createLeadPermissionsInput: CreateLeadPermissionsInput): CreateleadPermissionsResponse | Promise<CreateleadPermissionsResponse>;
+
+    abstract updateLeadPermission(updateLeadPermissionInput: UpdateLeadPermissionInput): leadPermission | Promise<leadPermission>;
+
+    abstract removeLeadPermission(id: number): Nullable<leadPermission> | Promise<Nullable<leadPermission>>;
+
     abstract createLead(createLeadInput: CreateLeadInput): CreateLeadResponse | Promise<CreateLeadResponse>;
 
     abstract createLeads(createLeadsInput: CreateLeadsInput): CreateLeadsResponse | Promise<CreateLeadsResponse>;
@@ -576,6 +626,14 @@ export abstract class IMutation {
     abstract updateTag(updateTagInput: UpdateTagInput): Tag | Promise<Tag>;
 
     abstract removeTag(id: number): Nullable<Tag> | Promise<Nullable<Tag>>;
+
+    abstract createTaskPermission(createTaskPermissionInput: CreateTaskPermissionInput): CreatetaskPermissionResponse | Promise<CreatetaskPermissionResponse>;
+
+    abstract createTaskPermissions(createTaskPermissionsInput: CreateTaskPermissionsInput): CreatetaskPermissionsResponse | Promise<CreatetaskPermissionsResponse>;
+
+    abstract updateTaskPermission(updateTaskPermissionInput: UpdateTaskPermissionInput): taskPermission | Promise<taskPermission>;
+
+    abstract removeTaskPermission(id: number): Nullable<taskPermission> | Promise<Nullable<taskPermission>>;
 
     abstract createTask(createTaskInput: CreateTaskInput): Task | Promise<Task>;
 
@@ -670,6 +728,34 @@ export class Company {
     updatedAt: DateTime;
 }
 
+export class LeadPermission {
+    id: number;
+    leadId: number;
+    userId: number;
+    canEdit: boolean;
+    lead: Lead;
+    user: User;
+}
+
+export class FindManyLeadPermissionsResponse {
+    objects: Nullable<leadPermission>[];
+    total: number;
+}
+
+export class ErrorResponse {
+    message: string;
+    status: string;
+}
+
+export class CreateleadPermissionResponse {
+    leadPermission?: Nullable<leadPermission>;
+    error?: Nullable<ErrorResponse>;
+}
+
+export class CreateleadPermissionsResponse {
+    count: number;
+}
+
 export class Lead {
     id: number;
     uuid?: Nullable<string>;
@@ -709,11 +795,6 @@ export class Lead {
 export class FindManyLeadsResponse {
     objects: Nullable<Lead>[];
     total: number;
-}
-
-export class ErrorResponse {
-    message: string;
-    status: string;
 }
 
 export class CreateLeadResponse {
@@ -817,6 +898,29 @@ export class Tag {
 export class FindManyTagReponse {
     objects: Nullable<Tag>[];
     total: number;
+}
+
+export class TaskPermission {
+    id: number;
+    taskId: number;
+    userId: number;
+    canEdit: boolean;
+    task: Task;
+    user: User;
+}
+
+export class FindManyTaskPermissionsResponse {
+    objects: Nullable<taskPermission>[];
+    total: number;
+}
+
+export class CreatetaskPermissionResponse {
+    taskPermission?: Nullable<taskPermission>;
+    error?: Nullable<ErrorResponse>;
+}
+
+export class CreatetaskPermissionsResponse {
+    count: number;
 }
 
 export class Task {

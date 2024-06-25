@@ -2,10 +2,10 @@ import { UseGuards } from "@nestjs/common";
 import { Args, Info, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { GraphQLResolveInfo } from "graphql";
 import {
-  CreateleadPermissionInput,
-  CreateleadPermissionsInput,
+  CreateLeadPermissionInput,
+  CreateLeadPermissionsInput,
   FiltersInput,
-  UpdateleadPermissionInput,
+  UpdateLeadPermissionInput,
 } from "src/graphql";
 import { AuthGuard } from "src/infra/common/guard/auth.guard";
 import { LeadPermissionService } from "./lead-permission.service";
@@ -18,7 +18,7 @@ export class leadPermissionResolver {
   @Mutation("createLeadPermission")
   create(
     @Args("createLeadPermissionInput")
-    createLeadPermissionInput: CreateleadPermissionInput,
+    createLeadPermissionInput: CreateLeadPermissionInput,
   ) {
     return this.leadPermissionService.create(createLeadPermissionInput);
   }
@@ -27,7 +27,7 @@ export class leadPermissionResolver {
   @Mutation("createLeadPermissions")
   createMany(
     @Args("createLeadPermissionsInput")
-    createLeadPermissionsInput: CreateleadPermissionsInput,
+    createLeadPermissionsInput: CreateLeadPermissionsInput,
   ) {
     return this.leadPermissionService.createMany(createLeadPermissionsInput);
   }
@@ -53,7 +53,7 @@ export class leadPermissionResolver {
   @Mutation("updateLeadPermission")
   update(
     @Args("updateLeadPermissionInput")
-    updateLeadPermissionInput: UpdateleadPermissionInput,
+    updateLeadPermissionInput: UpdateLeadPermissionInput,
   ) {
     return this.leadPermissionService.update(
       updateLeadPermissionInput.id,

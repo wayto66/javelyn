@@ -1,0 +1,66 @@
+type taskPermission {
+  id: Int!
+  taskId: Int!
+  userId: Int!
+  canEdit: Boolean!
+  task: Task!
+  user: User!
+}
+
+input CreateTaskPermissionInput {
+  taskId: Int!
+  userId: Int!
+  canEdit: Boolean!
+}
+
+input CreateTaskPermissionsInput {
+  taskPermissions: [CreateTaskPermissionInput!]!
+}
+
+input UpdateTaskPermissionInput {
+  id: Int!
+  taskId: Int
+  userId: Int
+  canEdit: Boolean
+}
+
+type FindManyTaskPermissionsResponse {
+  objects: [taskPermission]!
+  total: Int!
+}
+
+type Query {
+  taskPermissions(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyTaskPermissionsResponse!
+  taskPermission(id: Int!): taskPermission
+}
+
+type ErrorResponse {
+  message: String!
+  status: String!
+}
+
+type CreatetaskPermissionResponse {
+  taskPermission: taskPermission
+  error: ErrorResponse
+}
+
+type CreatetaskPermissionsResponse {
+  count: Int!
+}
+
+type Mutation {
+  createTaskPermission(
+    createTaskPermissionInput: CreateTaskPermissionInput!
+  ): CreatetaskPermissionResponse!
+  createTaskPermissions(
+    createTaskPermissionsInput: CreateTaskPermissionsInput!
+  ): CreatetaskPermissionsResponse!
+  updateTaskPermission(
+    updateTaskPermissionInput: UpdateTaskPermissionInput!
+  ): taskPermission!
+  removeTaskPermission(id: Int!): taskPermission
+}
