@@ -50,7 +50,11 @@ export class WebhooksController {
   async handleWebhook(@Body() body: IMetaLeadBody, @Res() res: Response) {
     console.log(body);
 
-    const bodyData = JSON.parse(body.data.slice(1, body.data.length - 2))[0];
+    const jsonString = body.data;
+    const slicedString = jsonString.slice(1, jsonString.length - 1);
+    const fixedString = slicedString.replaceAll("'", '"');
+
+    const bodyData = JSON.parse(fixedString);
 
     const { data, formId } = bodyData as IMetaLeadData;
 
