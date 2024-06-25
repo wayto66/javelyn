@@ -39,8 +39,9 @@ model Company {
 
   isActive Boolean @default(true)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt()
+  webhookIdentifiers WebhookIdentifier[]
 }
 
 model Tag {
@@ -221,9 +222,10 @@ model User {
   leads      Lead[]
   attributes Attribute[]
 
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  isActive           Boolean             @default(true)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @default(now())
+  webhookIdentifiers WebhookIdentifier[]
 }
 
 model Throw {
@@ -321,4 +323,18 @@ model Attribute {
   isActive  Boolean   @default(true)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
+}
+
+model WebhookIdentifier {
+  id        Int    @id @default(autoincrement())
+  formId    String @unique
+  companyId Int
+  userId    Int
+
+  company Company @relation(fields: [companyId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -53,3 +53,11 @@ export interface IHandleLiLeadParams {
   companyId: number;
   userId: number;
 }
+
+export interface IHandleMetaLeadParams {
+  mail: string;
+  formId: string;
+  name: string;
+  phone: string;
+  customFields: Record<string, any>;
+}

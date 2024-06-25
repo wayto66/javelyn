@@ -20,14 +20,6 @@ export class WebhooksController {
   private readonly ACCESS_TOKEN =
     "EAAaQc0e2UXsBOzHinZCTWDhsZBbf10YaaT7lMb5BlVqIKw0ZCCrRa1z12uoKKj2RFo1ZBQUtCFlkiOcAWFvqQse1my3zZBteZBol3fGLrJEorZBgUdRpYOOuOZCu1jcMGb8B3f0UVXXbHQX3cYZBFBvHjDA850iRqs6bZCkkyZBDIinm6DZAsaEFjOyeidpFZA8coTgvbV4VfBy5VZA2TFVZBqQAIgZD";
 
-  private readonly FACEBOOK_FORM_ID_MAP: Record<
-    string,
-    {
-      userId: number;
-      companyId: number;
-    }
-  > = {};
-
   @Get("facebook")
   verifyWebhook(@Query() query: any, @Res() res: Response) {
     const mode = query["hub.mode"];
@@ -63,19 +55,15 @@ export class WebhooksController {
 
     const { data, formId } = bodyData as IMetaLeadData;
 
-    const formIdData = this.FACEBOOK_FORM_ID_MAP[formId];
-    if (!formIdData) {
-      res
-        .status(HttpStatus.BAD_REQUEST)
-        .send(`Could not find id data for the formId: ${formId}`);
-      return;
-    }
+    const lead = await this.webhooksService.handleMetaLead({
+      formId,
+      name: data.full_name,
+      mail: data.email,
+      phone: data.phone_number,
+      customFields: {},
+    });
 
-    const { userId, companyId } = formIdData;
-
-    console.log({ data, formId, userId, companyId });
-
-    res.status(HttpStatus.OK);
+    res.status(HttpStatus.OK).send(JSON.stringify({ lead }));
   }
 
   @Post("estiload-loja-integrada")
