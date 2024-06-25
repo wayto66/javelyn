@@ -1,26 +1,19 @@
-export interface ILeadgenValue {
-  ad_id: string;
-  form_id: string;
-  leadgen_id: string;
-  created_time: number;
-  page_id: string;
-  adgroup_id: string;
+export class IMetaLeadBody {
+  data: string;
+  field_data: {
+    full_name: string;
+    email: string;
+    phone_number: string;
+  };
 }
 
-export interface ILeadgenChange {
-  field: "leadgen";
-  value: ILeadgenValue;
-}
-
-export interface ILeadgenEntry {
-  id: string;
-  time: number;
-  changes: ILeadgenChange[];
-}
-
-export interface ILeadgenEvent {
-  object: "page";
-  entry: ILeadgenEntry[];
+export class IMetaLeadData {
+  data: {
+    full_name: string;
+    email: string;
+    phone_number: string;
+  };
+  formId: string;
 }
 
 export interface ILojaIntegradaTicketData {

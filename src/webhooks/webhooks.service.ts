@@ -36,7 +36,7 @@ export class WebhooksService {
     customFields.Situacao = situacao;
     customFields.Sexo = sexo;
 
-    if (situacao === "Enviado") {
+    if (situacao === "Pedido Enviado") {
       if (customFields.Compras) {
         customFields.Compras = customFields.Compras + 1;
       } else {
@@ -44,7 +44,7 @@ export class WebhooksService {
       }
     }
 
-    const birthdaySplit = data_nascimento?.split("-");
+    const birthdaySplit = data_nascimento ? data_nascimento.split("-") : [];
     let birthdayYear: number | undefined;
     let birthdayMonth: number | undefined;
     let birthdayDay: number | undefined;

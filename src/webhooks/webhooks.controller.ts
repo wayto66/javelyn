@@ -8,7 +8,7 @@ import {
   Res,
 } from "@nestjs/common";
 import { Response } from "express";
-import { ILeadgenEvent, ILojaIntegradaTicketData } from "./dto";
+import { ILojaIntegradaTicketData, IMetaLeadBody, IMetaLeadData } from "./dto";
 import { WebhooksService } from "./webhooks.service";
 
 @Controller("webhooks")
@@ -47,8 +47,14 @@ export class WebhooksController {
   }
 
   @Post("facebook")
-  async handleWebhook(@Body() body: ILeadgenEvent, @Res() res: Response) {
+  async handleWebhook(@Body() body: IMetaLeadBody, @Res() res: Response) {
     console.log(body);
+
+    const bodyData = JSON.parse(body.data)[0];
+
+    const { data, formId } = bodyData as IMetaLeadData;
+
+    console.log({ data, formId });
 
     res.status(HttpStatus.OK);
   }
