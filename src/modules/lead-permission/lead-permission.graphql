@@ -1,0 +1,66 @@
+type leadPermission {
+  id: Int!
+  leadId: Int!
+  userId: Int!
+  canEdit: Boolean!
+  lead: Lead!
+  user: User!
+}
+
+input CreateLeadPermissionInput {
+  leadId: Int!
+  userId: Int!
+  canEdit: Boolean!
+}
+
+input CreateLeadPermissionsInput {
+  leadPermissions: [CreateLeadPermissionInput!]!
+}
+
+input UpdateLeadPermissionInput {
+  id: Int!
+  leadId: Int
+  userId: Int
+  canEdit: Boolean
+}
+
+type FindManyLeadPermissionsResponse {
+  objects: [leadPermission]!
+  total: Int!
+}
+
+type Query {
+  leadPermissions(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindManyLeadPermissionsResponse!
+  leadPermission(id: Int!): leadPermission
+}
+
+type ErrorResponse {
+  message: String!
+  status: String!
+}
+
+type CreateleadPermissionResponse {
+  leadPermission: leadPermission
+  error: ErrorResponse
+}
+
+type CreateleadPermissionsResponse {
+  count: Int!
+}
+
+type Mutation {
+  createLeadPermission(
+    createLeadPermissionInput: CreateLeadPermissionInput!
+  ): CreateleadPermissionResponse!
+  createLeadPermissions(
+    createLeadPermissionsInput: CreateLeadPermissionsInput!
+  ): CreateleadPermissionsResponse!
+  updateLeadPermission(
+    updateLeadPermissionInput: UpdateLeadPermissionInput!
+  ): leadPermission!
+  removeLeadPermission(id: Int!): leadPermission
+}
