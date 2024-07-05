@@ -48,7 +48,7 @@ export interface IHandleLiLeadParams {
   telefone_celular: string;
   telefone_principal: string;
   situacao: string;
-  data_nascimento: "1990-12-12";
+  data_nascimento: string;
   sexo: "m" | "f";
   companyId: number;
   userId: number;

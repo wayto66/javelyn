@@ -143,7 +143,7 @@ model Lead {
   mail      String?
 
   adOrigin     String?
-  status       String?
+  statusName   String?
   observation  String?
   customFields Json?
 
@@ -162,8 +162,9 @@ model Lead {
   tasks   Task[]
   tickets Ticket[]
   quotes  Quote[]
-  user    User     @relation(fields: [userId], references: [id])
-  company Company  @relation(fields: [companyId], references: [id])
+  user    User        @relation(fields: [userId], references: [id])
+  company Company     @relation(fields: [companyId], references: [id])
+  status  LeadStatus? @relation(fields: [statusName], references: [name])
 
   isRescue Boolean @default(false)
   isActive Boolean @default(true)
@@ -333,6 +334,17 @@ model WebhookIdentifier {
 
   company Company @relation(fields: [companyId], references: [id])
   user    User    @relation(fields: [userId], references: [id])
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LeadStatus {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  leads Lead[]
 
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
