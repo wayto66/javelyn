@@ -42,6 +42,7 @@ model Company {
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt()
   webhookIdentifiers WebhookIdentifier[]
+  leadStatus         LeadStatus[]
 }
 
 model Tag {
@@ -341,10 +342,12 @@ model WebhookIdentifier {
 }
 
 model LeadStatus {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+  id        Int    @id @default(autoincrement())
+  companyId Int
+  name      String @unique
 
-  leads Lead[]
+  leads   Lead[]
+  company Company @relation(fields: [companyId], references: [id])
 
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())

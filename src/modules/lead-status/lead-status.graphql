@@ -1,0 +1,36 @@
+type LeadStatus {
+  id: Int!
+  companyId: Int!
+  name: String!
+}
+
+input CreateLeadStatusInput {
+  name: String!
+  companyId: Int!
+}
+
+input UpdateLeadStatusInput {
+  id: Int!
+  isActive: Boolean
+  name: String
+}
+
+type FindAllLeadStatusResponse {
+  objects: [LeadStatus]!
+  total: Int!
+}
+
+type Query {
+  allLeadStatus(
+    page: Int!
+    pageSize: Int!
+    filters: FiltersInput
+  ): FindAllLeadStatusResponse!
+  leadStatus(id: Int!): LeadStatus
+}
+
+type Mutation {
+  createLeadStatus(createLeadStatusInput: CreateLeadStatusInput!): LeadStatus!
+  updateLeadStatus(updateLeadStatusInput: UpdateLeadStatusInput!): LeadStatus!
+  removeLeadStatus(id: Int!): LeadStatus
+}

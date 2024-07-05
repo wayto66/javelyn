@@ -13,6 +13,7 @@ import { AttributeModule } from "./modules/attribute/attribute.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { CategoryModule } from "./modules/category/category.module";
 import { CompanyModule } from "./modules/company/company.module";
+import { LeadStatusModule } from "./modules/lead-status/lead-status.module";
 import { LeadModule } from "./modules/lead/lead.module";
 import { ProductModule } from "./modules/product/product.module";
 import { QuoteModule } from "./modules/quote/quote.module";
@@ -61,6 +62,7 @@ import { WebhooksModule } from "./webhooks/webhooks.module";
     TaskCategoryModule,
     AttributeModule,
     WebhooksModule,
+    LeadStatusModule,
   ],
   controllers: [CheckController],
 })

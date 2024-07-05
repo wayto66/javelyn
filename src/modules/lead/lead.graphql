@@ -8,7 +8,7 @@ type Lead {
   phone: String
   mail: String
   adOrigin: String
-  status: String
+  statusName: String
   observation: String
   customFields: CustomScalar
   age: Int
@@ -28,6 +28,7 @@ type Lead {
   quotes: [Quote]
   user: User!
   company: Company!
+  status: LeadStatus
   isRescue: Boolean!
   isActive: Boolean!
   createdAt: DateTime!
@@ -42,7 +43,7 @@ input CreateLeadInput {
   phone: String
   mail: String
   adOrigin: String
-  status: String
+  statusName: String
   observation: String
   customFields: CustomScalar
   age: Int
@@ -73,7 +74,7 @@ input UpdateLeadInput {
   phone: String
   mail: String
   adOrigin: String
-  status: String
+  statusName: String
   observation: String
   age: Int
   neighborhood: String
@@ -107,7 +108,7 @@ type Query {
 
 type ErrorResponse {
   message: String!
-  status: String!
+  statusName: String!
 }
 
 type CreateLeadResponse {

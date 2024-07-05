@@ -91,6 +91,17 @@ export class UpdateCompanyInput {
     customFields?: Nullable<CustomScalar>;
 }
 
+export class CreateLeadStatusInput {
+    name: string;
+    companyId: number;
+}
+
+export class UpdateLeadStatusInput {
+    id: number;
+    isActive?: Nullable<boolean>;
+    name?: Nullable<string>;
+}
+
 export class CreateLeadInput {
     companyId: number;
     userId: number;
@@ -99,7 +110,7 @@ export class CreateLeadInput {
     phone?: Nullable<string>;
     mail?: Nullable<string>;
     adOrigin?: Nullable<string>;
-    status?: Nullable<string>;
+    statusName?: Nullable<string>;
     observation?: Nullable<string>;
     customFields?: Nullable<CustomScalar>;
     age?: Nullable<number>;
@@ -130,7 +141,7 @@ export class UpdateLeadInput {
     phone?: Nullable<string>;
     mail?: Nullable<string>;
     adOrigin?: Nullable<string>;
-    status?: Nullable<string>;
+    statusName?: Nullable<string>;
     observation?: Nullable<string>;
     age?: Nullable<number>;
     neighborhood?: Nullable<string>;
@@ -467,6 +478,10 @@ export abstract class IQuery {
 
     abstract company(id?: Nullable<number>): Nullable<Company> | Promise<Nullable<Company>>;
 
+    abstract allLeadStatus(page: number, pageSize: number, filters?: Nullable<FiltersInput>): FindAllLeadStatusResponse | Promise<FindAllLeadStatusResponse>;
+
+    abstract leadStatus(id: number): Nullable<LeadStatus> | Promise<Nullable<LeadStatus>>;
+
     abstract leads(page: number, pageSize: number, filters?: Nullable<FiltersInput>): FindManyLeadsResponse | Promise<FindManyLeadsResponse>;
 
     abstract lead(id: number): Nullable<Lead> | Promise<Nullable<Lead>>;
@@ -536,6 +551,12 @@ export abstract class IMutation {
     abstract updateCompany(updateCompanyInput: UpdateCompanyInput): Nullable<Company> | Promise<Nullable<Company>>;
 
     abstract removeCompany(id: number): Nullable<Company> | Promise<Nullable<Company>>;
+
+    abstract createLeadStatus(createLeadStatusInput: CreateLeadStatusInput): LeadStatus | Promise<LeadStatus>;
+
+    abstract updateLeadStatus(updateLeadStatusInput: UpdateLeadStatusInput): LeadStatus | Promise<LeadStatus>;
+
+    abstract removeLeadStatus(id: number): Nullable<LeadStatus> | Promise<Nullable<LeadStatus>>;
 
     abstract createLead(createLeadInput: CreateLeadInput): CreateLeadResponse | Promise<CreateLeadResponse>;
 
@@ -670,6 +691,17 @@ export class Company {
     updatedAt: DateTime;
 }
 
+export class LeadStatus {
+    id: number;
+    companyId: number;
+    name: string;
+}
+
+export class FindAllLeadStatusResponse {
+    objects: Nullable<LeadStatus>[];
+    total: number;
+}
+
 export class Lead {
     id: number;
     uuid?: Nullable<string>;
@@ -680,7 +712,7 @@ export class Lead {
     phone?: Nullable<string>;
     mail?: Nullable<string>;
     adOrigin?: Nullable<string>;
-    status?: Nullable<string>;
+    statusName?: Nullable<string>;
     observation?: Nullable<string>;
     customFields?: Nullable<CustomScalar>;
     age?: Nullable<number>;
@@ -700,6 +732,7 @@ export class Lead {
     quotes?: Nullable<Nullable<Quote>[]>;
     user: User;
     company: Company;
+    status?: Nullable<LeadStatus>;
     isRescue: boolean;
     isActive: boolean;
     createdAt: DateTime;
@@ -713,7 +746,7 @@ export class FindManyLeadsResponse {
 
 export class ErrorResponse {
     message: string;
-    status: string;
+    statusName: string;
 }
 
 export class CreateLeadResponse {
