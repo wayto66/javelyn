@@ -2,17 +2,21 @@ type LeadStatus {
   id: Int!
   companyId: Int!
   name: String!
+  color: String!
+  isActive: Boolean!
 }
 
 input CreateLeadStatusInput {
   name: String!
   companyId: Int!
+  color: String!
 }
 
 input UpdateLeadStatusInput {
   id: Int!
   isActive: Boolean
   name: String
+  color: String!
 }
 
 type FindAllLeadStatusResponse {

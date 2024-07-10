@@ -10,11 +10,12 @@ import { UpdateLeadStatusInput } from "./dto/update-lead-status.input";
 export class LeadStatusService {
   constructor(private readonly prismaService: PrismaService) {}
   create(createLeadStatusInput: CreateLeadStatusInput) {
-    const { name, companyId } = createLeadStatusInput;
+    const { name, companyId, color } = createLeadStatusInput;
     return this.prismaService.leadStatus.create({
       data: {
         name,
         companyId,
+        color,
       },
     });
   }
@@ -65,6 +66,10 @@ export class LeadStatusService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} leadStatus`;
+    return this.prismaService.leadStatus.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

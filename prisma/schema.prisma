@@ -138,13 +138,14 @@ model Lead {
   uuid      String? @default(uuid())
   companyId Int
   userId    Int
+  statusId  Int?
   name      String
   CPF       String?
   phone     String?
   mail      String?
 
-  adOrigin     String?
-  statusName   String?
+  adOrigin String?
+
   observation  String?
   customFields Json?
 
@@ -165,7 +166,7 @@ model Lead {
   quotes  Quote[]
   user    User        @relation(fields: [userId], references: [id])
   company Company     @relation(fields: [companyId], references: [id])
-  status  LeadStatus? @relation(fields: [statusName], references: [name])
+  status  LeadStatus? @relation(fields: [statusId], references: [id])
 
   isRescue Boolean @default(false)
   isActive Boolean @default(true)
@@ -344,7 +345,8 @@ model WebhookIdentifier {
 model LeadStatus {
   id        Int    @id @default(autoincrement())
   companyId Int
-  name      String @unique
+  name      String
+  color     String
 
   leads   Lead[]
   company Company @relation(fields: [companyId], references: [id])

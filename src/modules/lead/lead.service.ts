@@ -32,6 +32,7 @@ export class LeadService {
       zipCode,
       houseNumber,
       customFields,
+      statusId,
     } = createLeadInput;
     const lead = await this.prismaService.lead.create({
       data: {
@@ -46,6 +47,7 @@ export class LeadService {
         mail,
         observation,
         profession,
+        statusId,
         tags: prismaCollectionConnect(tagsIds),
         zipCode,
         houseNumber,
@@ -251,6 +253,7 @@ export class LeadService {
       skip: (page - 1) * pageSize,
       include: {
         tags: isFieldRequested(info, "tags"),
+        status: isFieldRequested(info, "status"),
       },
 
       orderBy: sortMap.get(sort),
@@ -286,6 +289,7 @@ export class LeadService {
         quotes: isFieldRequested(info, "quotes"),
         company: isFieldRequested(info, "company"),
         user: isFieldRequested(info, "user"),
+        status: isFieldRequested(info, "status"),
       },
     });
   }
@@ -309,7 +313,7 @@ export class LeadService {
       observation,
       phone,
       profession,
-      statusName,
+      statusId,
       tagsIds,
       userId,
       zipCode,
@@ -337,7 +341,7 @@ export class LeadService {
         observation,
         phone,
         profession,
-        statusName,
+        statusId,
         tags: prismaCollectionSet(tagsIds),
         userId,
         zipCode,

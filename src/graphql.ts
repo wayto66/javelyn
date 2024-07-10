@@ -94,12 +94,14 @@ export class UpdateCompanyInput {
 export class CreateLeadStatusInput {
     name: string;
     companyId: number;
+    color: string;
 }
 
 export class UpdateLeadStatusInput {
     id: number;
     isActive?: Nullable<boolean>;
     name?: Nullable<string>;
+    color: string;
 }
 
 export class CreateLeadInput {
@@ -110,7 +112,7 @@ export class CreateLeadInput {
     phone?: Nullable<string>;
     mail?: Nullable<string>;
     adOrigin?: Nullable<string>;
-    statusName?: Nullable<string>;
+    statusId?: Nullable<number>;
     observation?: Nullable<string>;
     customFields?: Nullable<CustomScalar>;
     age?: Nullable<number>;
@@ -141,7 +143,7 @@ export class UpdateLeadInput {
     phone?: Nullable<string>;
     mail?: Nullable<string>;
     adOrigin?: Nullable<string>;
-    statusName?: Nullable<string>;
+    statusId?: Nullable<number>;
     observation?: Nullable<string>;
     age?: Nullable<number>;
     neighborhood?: Nullable<string>;
@@ -695,6 +697,8 @@ export class LeadStatus {
     id: number;
     companyId: number;
     name: string;
+    color: string;
+    isActive: boolean;
 }
 
 export class FindAllLeadStatusResponse {
@@ -712,7 +716,7 @@ export class Lead {
     phone?: Nullable<string>;
     mail?: Nullable<string>;
     adOrigin?: Nullable<string>;
-    statusName?: Nullable<string>;
+    statusId?: Nullable<number>;
     observation?: Nullable<string>;
     customFields?: Nullable<CustomScalar>;
     age?: Nullable<number>;
