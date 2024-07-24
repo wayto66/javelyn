@@ -318,6 +318,7 @@ export class LeadService {
       userId,
       zipCode,
       customFields,
+      sortIndex,
     } = updateLeadInput;
     return await this.prismaService.lead.update({
       where: {
@@ -346,6 +347,7 @@ export class LeadService {
         userId,
         zipCode,
         customFields,
+        sortIndex,
       },
     });
   }

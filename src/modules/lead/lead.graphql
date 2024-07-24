@@ -8,6 +8,7 @@ type Lead {
   phone: String
   mail: String
   adOrigin: String
+  sortIndex: Int
   statusId: Int
   observation: String
   customFields: CustomScalar
@@ -76,6 +77,7 @@ input UpdateLeadInput {
   adOrigin: String
   statusId: Int
   observation: String
+  sortIndex: Int
   age: Int
   neighborhood: String
   customFields: CustomScalar

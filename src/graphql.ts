@@ -101,7 +101,8 @@ export class UpdateLeadStatusInput {
     id: number;
     isActive?: Nullable<boolean>;
     name?: Nullable<string>;
-    color: string;
+    color?: Nullable<string>;
+    sortIndex?: Nullable<number>;
 }
 
 export class CreateLeadInput {
@@ -145,6 +146,7 @@ export class UpdateLeadInput {
     adOrigin?: Nullable<string>;
     statusId?: Nullable<number>;
     observation?: Nullable<string>;
+    sortIndex?: Nullable<number>;
     age?: Nullable<number>;
     neighborhood?: Nullable<string>;
     customFields?: Nullable<CustomScalar>;
@@ -699,6 +701,7 @@ export class LeadStatus {
     name: string;
     color: string;
     isActive: boolean;
+    sortIndex?: Nullable<number>;
 }
 
 export class FindAllLeadStatusResponse {
@@ -716,6 +719,7 @@ export class Lead {
     phone?: Nullable<string>;
     mail?: Nullable<string>;
     adOrigin?: Nullable<string>;
+    sortIndex?: Nullable<number>;
     statusId?: Nullable<number>;
     observation?: Nullable<string>;
     customFields?: Nullable<CustomScalar>;

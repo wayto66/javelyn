@@ -4,6 +4,7 @@ type LeadStatus {
   name: String!
   color: String!
   isActive: Boolean!
+  sortIndex: Int
 }
 
 input CreateLeadStatusInput {
@@ -16,7 +17,8 @@ input UpdateLeadStatusInput {
   id: Int!
   isActive: Boolean
   name: String
-  color: String!
+  color: String
+  sortIndex: Int
 }
 
 type FindAllLeadStatusResponse {

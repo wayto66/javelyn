@@ -143,6 +143,7 @@ model Lead {
   CPF       String?
   phone     String?
   mail      String?
+  sortIndex Int     @default(0)
 
   adOrigin String?
 
@@ -347,6 +348,7 @@ model LeadStatus {
   companyId Int
   name      String
   color     String
+  sortIndex Int    @default(0)
 
   leads   Lead[]
   company Company @relation(fields: [companyId], references: [id])
