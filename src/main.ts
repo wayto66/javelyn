@@ -34,7 +34,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionFilter(new LoggerService()));
   app.enableCors({
     origin: "*",
-    methods: "GET,PUT,PATCH,POST,DELETE",
+    methods: "GET,PUT,PATCH,POST,DELETE,OPTIONS",
   });
 
   const swaggerOptions = new DocumentBuilder()
