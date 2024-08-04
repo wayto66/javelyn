@@ -1,30 +1,11 @@
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import * as fs from "fs";
 import { AppModule } from "./app.module";
 import { AllExceptionFilter } from "./infra/common/filter/all.exception.filter";
 import { LoggerService } from "./infra/common/logger/logger.service";
 
 async function bootstrap() {
-  const keyPath = "../../../etc/letsencrypt/live/javelyn.link/privkey.pem";
-  const certPath = "../../../etc/letsencrypt/live/javelyn.link/fullchain.pem";
-
-  let httpsOptions;
-
-  if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
-    httpsOptions = {
-      key: fs.readFileSync(keyPath),
-      cert: fs.readFileSync(certPath),
-    };
-  } else {
-    console.log(
-      "Arquivos de chave ou certificado não encontrados. HTTPS não será configurado.",
-    );
-  }
-  const app =
-    process.env.ENVIRONMENT === "dev"
-      ? await NestFactory.create(AppModule)
-      : await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule);
 
   process.on("uncaughtException", (err) => {
     console.error("\x1b[31m%s\x1b[0m", "UNCAUGHT EXCEPTION!");
