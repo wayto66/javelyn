@@ -8,6 +8,7 @@ import {
   Res,
 } from "@nestjs/common";
 import { Response } from "express";
+import { Tera } from "src/infra/common/utils/Tera";
 import { ILojaIntegradaTicketData, IMetaLeadBody, IMetaLeadData } from "./dto";
 import { WebhooksService } from "./webhooks.service";
 
@@ -55,13 +56,24 @@ export class WebhooksController {
 
     const { data, formId } = bodyData as IMetaLeadData;
 
-    const lead = await this.webhooksService.handleMetaLead({
+    const { lead } = await this.webhooksService.handleMetaLead({
       formId,
       name: data.full_name,
       mail: data.email,
       phone: data.phone_number,
       customFields: {},
     });
+
+    if (lead)
+      await Tera.notify({
+        body: {
+          notifyNewLead: {
+            lead,
+            companyId: lead.companyId,
+          },
+        },
+        endpoint: "new-lead",
+      });
 
     res.status(HttpStatus.OK).send(JSON.stringify({ lead }));
   }

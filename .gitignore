@@ -5,6 +5,7 @@
 /.wwebjs_cache
 .env
 .gitignore
+userdata.bash
 
 # Logs
 logs
