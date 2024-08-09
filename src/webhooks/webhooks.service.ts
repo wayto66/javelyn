@@ -95,16 +95,6 @@ export class WebhooksService {
 
     const { companyId, userId } = webhookData;
 
-    const leadCheck = await this.prismaService.lead.findFirst({
-      where: {
-        name,
-        companyId,
-        phone,
-      },
-    });
-
-    if (leadCheck) throw new BadRequestException("Lead already registered");
-
     const lead = await this.prismaService.lead.upsert({
       where: {
         companyId_name_phone: {
