@@ -91,7 +91,7 @@ export class WebhooksService {
       },
     });
 
-    if (!webhookData) throw new BadRequestException("Invalid formId.");
+    if (!webhookData) throw new BadRequestException("Invalid formId!");
 
     const { companyId, userId } = webhookData;
 
