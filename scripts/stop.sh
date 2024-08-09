@@ -9,8 +9,6 @@ else
   echo "No NestJS application is running."
 fi
 
-sudo rm -rf /home/ec2-user/javelyn/*
-
 
 
 
