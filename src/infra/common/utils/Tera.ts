@@ -1,5 +1,5 @@
 import axios from "axios";
-import crypto from "crypto";
+import * as crypto from "crypto";
 
 export interface INotifyParams {
   body: any;
@@ -17,7 +17,7 @@ export class Tera {
 
     const response = await axios.post(`${teraUrl}/notify/${endpoint}`, body, {
       headers: {
-        "x-mac-signature": signature,
+        "x-hmac-signature": signature,
       },
     });
     const data = await response.data;
