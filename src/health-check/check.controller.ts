@@ -4,6 +4,6 @@ import { Controller, Get } from "@nestjs/common";
 export class CheckController {
   @Get("/")
   getHello(): string {
-    return "Hello World";
+    return "Hello World!";
   }
 }
